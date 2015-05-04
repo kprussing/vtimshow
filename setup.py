@@ -26,13 +26,13 @@ setup(
     author_email = defaults.AUTHOR_EMAIL,
     license = defaults.LICENSE,
 
-    install_requires = ["ViTables >2.1",],
+    install_requires = ["ViTables >2.1", "pyqtgraph"],
     dependency_links = [
         "https://github.com/uvemas/ViTables@f6cb68227e10bf0658fd11b8daa56b76452b0341#egg=project-version"
     ],
 
     entry_points = {
         "vitables.plugins" : 
-        "image_viewer = vtimshow:VtImageViewer"
+        defaults.UID +" = vtimshow:VtImageViewer"
     }
 )
