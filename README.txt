@@ -7,15 +7,6 @@ plug-in is designed to work with the development branch of ViTables
 (2.2a1), and, therefore, uses ``setuptools`` to declare the entry points
 into ``vitables.plugins``.
 
-Installation
-------------
-
-To install, simply run
-
-    python setup.py install
-
-using the version of python that installed ViTables.
-
 .. _ViTables: http://vitables.org
 .. _Issue #11: https://github.com/uvemas/ViTables/issues/11
 
