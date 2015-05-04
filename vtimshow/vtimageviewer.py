@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import logging
+logging.getLogger().addHandler(logging.NullHandler())
 
 from . import defaults
 from . import __version__
@@ -14,7 +16,8 @@ class VtImageViewer:
 
     def __init__(self, parent=None):
         #super(VtImageViewer, self).__init__(parent)
-
+        logger = logging.getLogger(__name__ +".VtImageViewer")
+        logger.debug("Constructor called")
 
     def helpAbout(self, parent):
         """Full description of the plugin.

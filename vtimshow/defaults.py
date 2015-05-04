@@ -3,8 +3,10 @@
 Default parameters for the module.
 
 """
-
+import logging
 import os
+
+logging.getLogger().addHandler(logging.NullHandler())
 
 AUTHOR = "Keith F Prussing"
 AUTHOR_EMAIL = "kprussing74@gmail.com"

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import logging
+logging.getLogger().addHandler(logging.NullHandler())
 
 from . import defaults
 
