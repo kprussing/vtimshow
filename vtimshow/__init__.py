@@ -11,5 +11,3 @@ comment = defaults.COMMENT
 
 from .vtimageviewer import VtImageViewer
 
-print("Sourced!")
-
