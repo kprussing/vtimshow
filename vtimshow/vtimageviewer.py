@@ -8,6 +8,7 @@ import vitables
 from vitables.vtapp import translate
 
 from . import _defaults
+from .imagewidget import ImageWidget
 
 class VtImageViewer:
     """
@@ -63,6 +64,10 @@ class VtImageViewer:
             )
             logger.error(msg)
             return
+
+        widget = ImageWidget(node)
+        window = vitables.utils.getGui().workspace.addSubWindow(widget)
+        widget.show()
 
     def helpAbout(self, parent):
         """Full description of the plugin.
