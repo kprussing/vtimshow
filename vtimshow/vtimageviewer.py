@@ -33,7 +33,7 @@ class VtImageViewer:
             "author" : "{0:s} <{1:s}>".format(
                 defaults.AUTHOR, defaults.AUTHOR_EMAIL
             ),
-            "comment" : QtGui.QApplication.translate(
+            "comment" : vitables.vtapp.translate(
                 defaults.PLUGIN_CLASS,
                 """
                 <qt>
