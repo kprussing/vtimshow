@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 import logging
-logging.getLogger().addHandler(logging.NullHandler())
-
-from vtimshow import _defaults
+import numpy
 
 from PyQt4 import QtGui
+
+import vitables
+from vitables.vtapp import translate
+
+from vtimshow import _defaults
 
 class VtImageViewer:
     """
@@ -17,6 +20,49 @@ class VtImageViewer:
         #super(VtImageViewer, self).__init__(parent)
         logger = logging.getLogger(__name__ +".VtImageViewer")
         logger.debug("Constructor called")
+
+        gui = vitables.utils.getGui()
+        action = QtGui.QAction("Image View", gui)
+        action.setStatusTip("View as image")
+        action.triggered.connect(self.imshow)
+
+        vitables.utils.addToLeafContextMenu(action)
+
+    def imshow(self):
+        """
+        Generate the image.
+        """
+        logger = logging.getLogger(__name__ +".VtImageViewer.imshow")
+        nodes = vitables.utils.getSelectedNodes()
+        if len(nodes) != 1:
+            msg = translate(
+                _defaults["PLUGIN_CLASS"],
+                "Only one node can be viewed as an image at a time!",
+                "Plugin error message"
+            )
+            logger.error(msg)
+            return
+
+        node = nodes[0]
+        valid = numpy.issubdtype(node.dtype, int) | \
+                numpy.issubdtype(node.dtype, float)
+        if not valid:
+            msg = translate(
+                _defaults["PLUGIN_CLASS"],
+                "Node must be a numeric type array!",
+                "Plugin error message"
+            )
+            logger.error(msg)
+            return
+
+        if not (node.ndim == 2 and 1 in node.shape) and node.ndim != 3:
+            msg = translate(
+                _defaults["PLUGIN_CLASS"],
+                "Node must be 2D or 3D.",
+                "Plugin error message"
+            )
+            logger.error(msg)
+            return
 
     def helpAbout(self, parent):
         """Full description of the plugin.
