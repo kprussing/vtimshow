@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import collections
 import logging
 import numpy
 
@@ -13,11 +12,6 @@ import pyqtgraph
 from vitables.vtapp import translate
 
 from . import _defaults
-
-# Define a named tuple for the ``dbt_leaf`` data.
-DBTLeaf = collections.namedtuple(
-    "DBTLeaf", ("filename",)
-)
 
 class ImageWidget(pyqtgraph.ImageView):
     """
@@ -42,6 +36,4 @@ class ImageWidget(pyqtgraph.ImageView):
         data[numpy.isnan(data)] = 0
         self.setImage(data)
         self.show()
-
-        self.dbt_leaf = DBTLeaf(filename = node._v_file.filename)
 
