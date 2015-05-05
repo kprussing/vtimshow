@@ -31,3 +31,28 @@ comment = _defaults["COMMENT"]
 
 from vtimshow.vtimageviewer import VtImageViewer
 
+def _setup_logger(name):
+    """
+    Add the GUI's logging window as a stream handler.
+
+    By default, the stream logger is removed during the invocation of
+    ``vitables``.  The logging window in the GUI is a stream handler for
+    the ``vitables`` logger _only_.  This method will add the logging
+    window in the GUI as a stream handler for the named logger.  The
+    method checks to see if ``vitables`` is an active application.  If
+    it is not, nothing is done.
+
+    """
+    logger = logging.getLogger(name)
+    app = vitables.utils.getApp()
+    if app is not None:
+        stream = logging.StreamHandler(app.gui.logger)
+        stream.setFormatter(
+            logging.Formatter(vitables.vtgui._GUI_LOG_FORMAT)
+        )
+        logger.addHandler(stream)
+
+    return
+
+_setup_logger(_defaults["MODULE_NAME"])
+
