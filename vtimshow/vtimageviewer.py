@@ -2,17 +2,16 @@
 import logging
 logging.getLogger().addHandler(logging.NullHandler())
 
-from . import defaults
-from . import __version__
+from vtimshow import _defaults
 
 from PyQt4 import QtGui
 
 class VtImageViewer:
     """
     """
-    UID = defaults.UID
-    NAME = defaults.PLUGIN_NAME
-    COMMENT = defaults.COMMENT
+    UID = _defaults["UID"]
+    NAME = _defaults["PLUGIN_NAME"]
+    COMMENT = _defaults["COMMENT"]
 
     def __init__(self, parent=None):
         #super(VtImageViewer, self).__init__(parent)
@@ -28,13 +27,13 @@ class VtImageViewer:
         from vitables.plugins.aboutpage import AboutPage
         desc = {
             "version" : __version__,
-            "module_name" : defaults.MODULE_NAME,
-            "folder" : defaults.FOLDER,
+            "module_name" : _defaults["MODULE_NAME"],
+            "folder" : _defaults["FOLDER"],
             "author" : "{0:s} <{1:s}>".format(
-                defaults.AUTHOR, defaults.AUTHOR_EMAIL
+                _defaults["AUTHOR"], _defaults["AUTHOR_EMAIL"]
             ),
-            "comment" : vitables.vtapp.translate(
-                defaults.PLUGIN_CLASS,
+            "comment" : translate(
+                _defaults["PLUGIN_CLASS"],
                 """
                 <qt>
                 <p>View 2D data set as an image.</p>
