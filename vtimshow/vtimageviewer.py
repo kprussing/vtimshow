@@ -7,7 +7,7 @@ from PyQt4 import QtGui
 import vitables
 from vitables.vtapp import translate
 
-from vtimshow import _defaults
+from . import _defaults
 
 class VtImageViewer:
     """
