@@ -8,7 +8,7 @@ import vitables
 from vitables.vtapp import translate
 
 from . import _defaults
-from .imagewidget import ImageWidget
+from .imagewindow import ImageWindow
 
 class VtImageViewer:
     """
@@ -34,8 +34,8 @@ class VtImageViewer:
         Generate the image.
         """
         logger = logging.getLogger(__name__ +".VtImageViewer.imshow")
-        nodes = vitables.utils.getSelectedNodes()
-        if len(nodes) != 1:
+        indexes = vitables.utils.getSelectedIndexes()
+        if len(indexes) != 1:
             msg = translate(
                 _defaults["PLUGIN_CLASS"],
                 "Only one node can be viewed as an image at a time!",
@@ -44,7 +44,9 @@ class VtImageViewer:
             logger.error(msg)
             return
 
-        node = nodes[0]
+        dbg = vitables.utils.getGui().dbs_tree_model
+        leaf = dbg.nodeFromIndex(indexes[0])
+        node = leaf.node
         valid = numpy.issubdtype(node.dtype, int) | \
                 numpy.issubdtype(node.dtype, float)
         if not valid:
@@ -65,9 +67,9 @@ class VtImageViewer:
             logger.error(msg)
             return
 
-        widget = ImageWidget(node)
-        window = vitables.utils.getGui().workspace.addSubWindow(widget)
-        widget.show()
+        workspace = vitables.utils.getGui().workspace
+
+        window = ImageWindow(leaf, parent=workspace)
 
     def helpAbout(self, parent):
         """Full description of the plugin.
