@@ -17,14 +17,14 @@ setup(
     version = read(os.path.join(os.path.dirname(__file__), "VERSION")),
     packages = find_packages(),
 
-    description = defaults.COMMENT,
+    description = _defaults.COMMENT,
     long_description = read(
         os.path.join(os.path.dirname(__file__), "README.txt")
     ),
 
-    author = defaults.AUTHOR,
-    author_email = defaults.AUTHOR_EMAIL,
-    license = defaults.LICENSE,
+    author = _defaults.AUTHOR,
+    author_email = _defaults.AUTHOR_EMAIL,
+    license = _defaults.LICENSE,
 
     install_requires = ["ViTables >2.1", "pyqtgraph"],
     dependency_links = [
@@ -33,6 +33,6 @@ setup(
 
     entry_points = {
         "vitables.plugins" : 
-        defaults.UID +" = vtimshow:VtImageViewer"
+        _defaults.UID +" = vtimshow:VtImageViewer"
     }
 )
