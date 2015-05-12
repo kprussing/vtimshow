@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>55</x>
-     <y>30</y>
+     <y>55</y>
      <width>75</width>
      <height>25</height>
     </rect>
@@ -43,7 +43,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>30</y>
+     <y>55</y>
      <width>45</width>
      <height>25</height>
     </rect>
@@ -56,7 +56,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>55</y>
+     <y>30</y>
      <width>45</width>
      <height>25</height>
     </rect>
@@ -69,7 +69,7 @@
    <property name="geometry">
     <rect>
      <x>55</x>
-     <y>55</y>
+     <y>30</y>
      <width>75</width>
      <height>25</height>
     </rect>
@@ -118,7 +118,7 @@
    <property name="geometry">
     <rect>
      <x>142</x>
-     <y>32</y>
+     <y>57</y>
      <width>70</width>
      <height>20</height>
     </rect>
@@ -131,7 +131,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>32</y>
+     <y>57</y>
      <width>70</width>
      <height>20</height>
     </rect>
@@ -176,7 +176,7 @@
    <property name="geometry">
     <rect>
      <x>300</x>
-     <y>32</y>
+     <y>57</y>
      <width>70</width>
      <height>20</height>
     </rect>
@@ -192,7 +192,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>30</y>
+     <y>55</y>
      <width>45</width>
      <height>25</height>
     </rect>
@@ -205,7 +205,7 @@
    <property name="geometry">
     <rect>
      <x>142</x>
-     <y>57</y>
+     <y>32</y>
      <width>70</width>
      <height>20</height>
     </rect>
@@ -218,7 +218,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>57</y>
+     <y>32</y>
      <width>70</width>
      <height>20</height>
     </rect>
@@ -231,7 +231,7 @@
    <property name="geometry">
     <rect>
      <x>300</x>
-     <y>57</y>
+     <y>32</y>
      <width>70</width>
      <height>20</height>
     </rect>
@@ -247,7 +247,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>55</y>
+     <y>30</y>
      <width>45</width>
      <height>25</height>
     </rect>

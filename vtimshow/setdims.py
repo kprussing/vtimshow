@@ -39,25 +39,25 @@ class SetDims(QtGui.QDialog):
         )
         self.dims = array.shape
 
-        self._set_combobox(self.widthComboBox)
-        self.widthComboBox.setCurrentIndex(0)
-        self.widthComboBox.currentIndexChanged.connect(
-            self._update_width
+        self._set_combobox(self.heightComboBox)
+        self.heightComboBox.setCurrentIndex(0)
+        self.heightComboBox.currentIndexChanged.connect(
+            self._update_height
         )
-        self._update_width()
+        self._update_height()
 
         if len(self.dims) <= 1:
-            self.heightComboBox.setEnabled(False)
-            self.heightSpinBoxStart.setEnabled(False)
-            self.heightSpinBoxEnd.setEnabled(False)
-            self.heightSpinBoxStride.setEnabled(False)
+            self.widthComboBox.setEnabled(False)
+            self.widthSpinBoxStart.setEnabled(False)
+            self.widthSpinBoxEnd.setEnabled(False)
+            self.widthSpinBoxStride.setEnabled(False)
         else:
-            self._set_combobox(self.heightComboBox)
-            self.heightComboBox.setCurrentIndex(1)
-            self.heightComboBox.currentIndexChanged.connect(
-                self._update_height
+            self._set_combobox(self.widthComboBox)
+            self.widthComboBox.setCurrentIndex(1)
+            self.widthComboBox.currentIndexChanged.connect(
+                self._update_width
             )
-            self._update_height()
+            self._update_width()
 
         if len(self.dims) <= 2:
             self.depthComboBox.setEnabled(False)
@@ -83,19 +83,6 @@ class SetDims(QtGui.QDialog):
 
         return
 
-    def _update_width(self):
-        """
-        Update the width boxes
-        """
-        maxval = self.dims[self.widthComboBox.currentIndex()]
-        self.widthSpinBoxStart.setRange(0, maxval)
-        self.widthSpinBoxStart.setValue(0)
-        self.widthSpinBoxEnd.setRange(0, maxval)
-        self.widthSpinBoxEnd.setValue(maxval)
-        self.widthSpinBoxStride.setRange(0, maxval)
-        self.widthMaxLabel.setText("{0:d}".format(maxval))
-        return
-
     def _update_height(self):
         """
         Update the height boxes
@@ -107,6 +94,19 @@ class SetDims(QtGui.QDialog):
         self.heightSpinBoxEnd.setValue(maxval)
         self.heightSpinBoxStride.setRange(0, maxval)
         self.heightMaxLabel.setText("{0:d}".format(maxval))
+        return
+
+    def _update_width(self):
+        """
+        Update the width boxes
+        """
+        maxval = self.dims[self.widthComboBox.currentIndex()]
+        self.widthSpinBoxStart.setRange(0, maxval)
+        self.widthSpinBoxStart.setValue(0)
+        self.widthSpinBoxEnd.setRange(0, maxval)
+        self.widthSpinBoxEnd.setValue(maxval)
+        self.widthSpinBoxStride.setRange(0, maxval)
+        self.widthMaxLabel.setText("{0:d}".format(maxval))
         return
 
     def _update_depth(self):
@@ -122,17 +122,6 @@ class SetDims(QtGui.QDialog):
         self.depthMaxLabel.setText("{0:d}".format(maxval))
         return
 
-    def get_width(self):
-        """
-        Return the width dimensions
-        """
-        return Dimension(
-            dim=self.widthComboBox.currentIndex(),
-            start=self.widthSpinBoxStart.value(),
-            end=self.widthSpinBoxEnd.value(),
-            stride=self.widthSpinBoxStride.value()
-        )
-
     def get_height(self):
         """
         Return the height dimensions
@@ -145,6 +134,20 @@ class SetDims(QtGui.QDialog):
             start=self.heightSpinBoxStart.value(),
             end=self.heightSpinBoxEnd.value(),
             stride=self.heightSpinBoxStride.value()
+        )
+
+    def get_width(self):
+        """
+        Return the width dimensions
+        """
+        if not self.widthComboBox.isEnabled():
+            return None
+
+        return Dimension(
+            dim=self.widthComboBox.currentIndex(),
+            start=self.widthSpinBoxStart.value(),
+            end=self.widthSpinBoxEnd.value(),
+            stride=self.widthSpinBoxStride.value()
         )
 
     def get_depth(self):
