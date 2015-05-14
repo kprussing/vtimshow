@@ -54,10 +54,10 @@ class ImageWindow(QtGui.QMdiSubWindow):
 
         dat[numpy.isnan(dat)] = 0
 
-        widget = pyqtgraph.ImageView()
-        widget.setImage(dat)
-        self.setWidget(widget)
-        widget.show()
+        self.widget = pyqtgraph.ImageView()
+        self.widget.setImage(dat)
+        self.setWidget(self.widget)
+        self.widget.show()
 
         self.pindex = None
         self.dbt_leaf = leaf
