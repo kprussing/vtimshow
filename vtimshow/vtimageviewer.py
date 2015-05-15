@@ -47,9 +47,7 @@ class VtImageViewer:
         dbg = vitables.utils.getGui().dbs_tree_model
         leaf = dbg.nodeFromIndex(indexes[0])
         node = leaf.node
-        valid = numpy.issubdtype(node.dtype, int) | \
-                numpy.issubdtype(node.dtype, float)
-        if not valid:
+        if node.dtype.kind not in "iuf":
             msg = translate(
                 _defaults["PLUGIN_CLASS"],
                 "Node must be a numeric type array!",
