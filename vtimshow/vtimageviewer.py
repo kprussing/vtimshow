@@ -57,10 +57,10 @@ class VtImageViewer:
             return
 
         if not (node.ndim == 2 and 1 not in node.shape) \
-                and node.ndim != 3:
+                and node.ndim not in (3,4):
             msg = translate(
                 _defaults["PLUGIN_CLASS"],
-                "Node must be 2D or 3D.",
+                "Node must be 2D, 3D or 4D.",
                 "Plugin error message"
             )
             logger.error(msg)

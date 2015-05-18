@@ -65,13 +65,19 @@ class SetDims(QtGui.QDialog):
             self.depthSpinBoxEnd.setEnabled(False)
             self.depthSpinBoxStride.setEnabled(False)
         else:
+            self.depthComboBox.addItem("None")
             self._set_combobox(self.depthComboBox)
-            self.depthComboBox.setCurrentIndex(2)
+            self.depthComboBox.setCurrentIndex(1)
             self.depthComboBox.currentIndexChanged.connect(
                 self._update_depth
             )
             self._update_depth()
+            # Assume the first dimension is the depth.  That means the
+            # width and height need to be shifted back one.
+            self.heightComboBox.setCurrentIndex(1)
+            self.widthComboBox.setCurrentIndex(2)
 
+        self._set_rgbaComboBox()
         self.show()
 
     def _set_combobox(self, combobox):
@@ -83,11 +89,52 @@ class SetDims(QtGui.QDialog):
 
         return
 
+    def _set_rgbaComboBox(self):
+        """
+        Only valid options.
+        """
+        self.rgbaComboBox.setEnabled(False)
+        if len(self.dims) < 3:
+            return
+
+        self.rgbaComboBox.addItem("None")
+        fmt = "dim{0:d} ({1:s})"
+        for it in range(len(self.dims)):
+            if self.dims[it] == 3:
+                item = fmt.format(it, "RGB")
+            elif self.dims[it] == 4:
+                item = fmt.format(it, "RGBA")
+            else:
+                continue
+
+            self.rgbaComboBox.addItem(item)
+
+        if self.rgbaComboBox.count() > 1:
+            self.rgbaComboBox.setEnabled(True)
+
+    def _combobox_text_to_index(self, combobox):
+        """
+        Parse the text of the combo box for the proper index
+        """
+        if combobox.isEnabled():
+            text = combobox.currentText()
+            if text == "None":
+                return None
+            else:
+                return int(text.split()[0][3:])
+        else:
+            return None
+
+
     def _update_height(self):
         """
         Update the height boxes
         """
-        maxval = self.dims[self.heightComboBox.currentIndex()]
+        idx = self._combobox_text_to_index(self.heightComboBox)
+        if idx is None:
+            return
+
+        maxval = self.dims[idx]
         self.heightSpinBoxStart.setRange(0, maxval)
         self.heightSpinBoxStart.setValue(0)
         self.heightSpinBoxEnd.setRange(0, maxval)
@@ -100,7 +147,11 @@ class SetDims(QtGui.QDialog):
         """
         Update the width boxes
         """
-        maxval = self.dims[self.widthComboBox.currentIndex()]
+        idx = self._combobox_text_to_index(self.widthComboBox)
+        if idx is None:
+            return
+
+        maxval = self.dims[idx]
         self.widthSpinBoxStart.setRange(0, maxval)
         self.widthSpinBoxStart.setValue(0)
         self.widthSpinBoxEnd.setRange(0, maxval)
@@ -113,12 +164,27 @@ class SetDims(QtGui.QDialog):
         """
         Update the depth boxes
         """
-        maxval = self.dims[self.depthComboBox.currentIndex()]
+        idx = self._combobox_text_to_index(self.depthComboBox)
+        if idx is None:
+            self.depthSpinBoxStart.setValue(0)
+            self.depthSpinBoxStart.setEnabled(False)
+            self.depthSpinBoxEnd.setValue(0)
+            self.depthSpinBoxEnd.setEnabled(False)
+            self.depthSpinBoxStride.setValue(1)
+            self.depthSpinBoxStride.setEnabled(False)
+            self.depthMaxLabel.setText("")
+            return
+
+        maxval = self.dims[idx]
         self.depthSpinBoxStart.setRange(0, maxval)
         self.depthSpinBoxStart.setValue(0)
+        self.depthSpinBoxStart.setEnabled(True)
         self.depthSpinBoxEnd.setRange(0, maxval)
         self.depthSpinBoxEnd.setValue(maxval)
-        self.depthSpinBoxStride.setRange(0, maxval)
+        self.depthSpinBoxEnd.setEnabled(True)
+        self.depthSpinBoxStride.setRange(1, maxval-1)
+        self.depthSpinBoxStride.setValue(1)
+        self.depthSpinBoxStride.setEnabled(True)
         self.depthMaxLabel.setText("{0:d}".format(maxval))
         return
 
@@ -129,8 +195,13 @@ class SetDims(QtGui.QDialog):
         if not self.heightComboBox.isEnabled():
             return None
 
+        idx = self._combobox_text_to_index(self.heightComboBox)
+        if idx is None:
+            return None
+
+
         return Dimension(
-            dim=self.heightComboBox.currentIndex(),
+            dim=idx,
             start=self.heightSpinBoxStart.value(),
             end=self.heightSpinBoxEnd.value(),
             stride=self.heightSpinBoxStride.value()
@@ -142,9 +213,13 @@ class SetDims(QtGui.QDialog):
         """
         if not self.widthComboBox.isEnabled():
             return None
+        idx = self._combobox_text_to_index(self.widthComboBox)
+        if idx is None:
+            return None
+
 
         return Dimension(
-            dim=self.widthComboBox.currentIndex(),
+            dim=idx,
             start=self.widthSpinBoxStart.value(),
             end=self.widthSpinBoxEnd.value(),
             stride=self.widthSpinBoxStride.value()
@@ -157,12 +232,29 @@ class SetDims(QtGui.QDialog):
         if not self.depthComboBox.isEnabled():
             return None
 
+        idx = self._combobox_text_to_index(self.depthComboBox)
+        if idx is None:
+            return None
+
         return Dimension(
-            dim=self.depthComboBox.currentIndex(),
+            dim=idx,
             start=self.depthSpinBoxStart.value(),
             end=self.depthSpinBoxEnd.value(),
             stride=self.depthSpinBoxStride.value()
         )
+
+    def get_rgba(self):
+        """
+        Return the RGB(A) dimension
+        """
+        if not self.rgbaComboBox.isEnabled():
+            return None
+
+        idx = self._combobox_text_to_index(self.rgbaComboBox)
+        if idx is None:
+            return None
+
+        return Dimension(dim=idx, start=None, end=None, stride=None)
 
 def main():
     """
@@ -172,12 +264,13 @@ def main():
     import sys
     logging.basicConfig(level=logging.DEBUG)
     app = QtGui.QApplication(sys.argv)
-    array = numpy.random.random((256,320,63))
+    array = numpy.random.random((3,256,320,63))
     ex = SetDims(array)
     if ex.exec():
-        print(ex.get_width())
-        print(ex.get_height())
-        print(ex.get_depth())
+        print("Width : {0!s}".format(ex.get_width()))
+        print("Height: {0!s}".format(ex.get_height()))
+        print("Depth : {0!s}".format(ex.get_depth()))
+        print("RGBA  : {0!s}".format(ex.get_rgba()))
         ex.close()
 
     sys.exit(app.exec_())
