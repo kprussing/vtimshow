@@ -75,7 +75,7 @@ class ImageWindow(QtGui.QMdiSubWindow):
                 H.start:H.end:H.stride
              ]
         elif D is not None and R is None:
-            if len(self.dims) != 3:
+            if len(self.data.shape) != 3:
                 msg = translate(
                     _defaults["PLUGIN_CLASS"],
                     "Either Depth or RGBA can be set!  Not both.",
@@ -90,7 +90,7 @@ class ImageWindow(QtGui.QMdiSubWindow):
                 H.start:H.end:H.stride
             ]
         elif D is None and R is not None:
-            if len(self.dims) != 3:
+            if len(self.data.shape) != 3:
                 msg = translate(
                     _defaults["PLUGIN_CLASS"],
                     "Either Depth or RGBA can be set!  Not both.",
