@@ -1,9 +1,0 @@
-Installation
-============
-
-To install, simply run
-
-    python setup.py install
-
-using the version of python that installed ViTables.
-
