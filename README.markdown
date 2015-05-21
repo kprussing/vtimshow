@@ -15,7 +15,7 @@ into `vitables.plugins`.
 Screen Shot
 -----------
 
-[!Viewing example/example.h5](example/screen_shot_20150521T140720.png)
+![Viewing example/example.h5](example/screen_shot_20150521T140720.png)
 
 
 Installation
