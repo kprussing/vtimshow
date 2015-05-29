@@ -19,7 +19,7 @@ setup(
 
     description = _defaults["COMMENT"],
     long_description = read(
-        os.path.join(os.path.dirname(__file__), "README.txt")
+        os.path.join(os.path.dirname(__file__), "README.markdown")
     ),
 
     author = _defaults["AUTHOR"],
