@@ -33,7 +33,18 @@ After running the install, launch ViTables, open the Preferences menu,
 select the Plugins tab, and enable Image Viewer.  Once you restart
 ViTables, you can right click on a data set and view it as an image.
 
+### Notes ###
+
+As noted in [Issue #33], the current development branch of ViTables
+requires `setuptools-git` to work.  If you need to install ViTables from
+an archived download, please refer to [this patch] to aid in
+installation.  Alternatively, you can download the patched version of
+the development branch [here](patched vitables)
+
 [ViTables]: http://vitables.org
 [PyQtGraph]: http://www.pyqtgraph.org
 [Issue #11]: https://github.com/uvemas/ViTables/issues/11
+[Issue #33]: https://github.com/uvemas/ViTables/issues/33
+[this patch]: https://github.com/kprussing/ViTables/commit/9ca932dc862704b30b7f49c997a35385cf59235c
+[patched vitables]: https://github.com/kprussing/ViTables/tree/install_fix
 
