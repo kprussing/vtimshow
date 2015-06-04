@@ -10,6 +10,8 @@ from vitables.vtapp import translate
 from . import _defaults
 from .imagewindow import ImageWindow
 
+__version__ = "0.1.3a"
+
 class VtImageViewer:
     """
     """
