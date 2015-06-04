@@ -10,8 +10,6 @@ from vitables.vtapp import translate
 from . import _defaults
 from .imagewindow import ImageWindow
 
-__version__ = "0.1.3a"
-
 class VtImageViewer:
     """
     """
@@ -78,9 +76,9 @@ class VtImageViewer:
         This is adapted from the code used in the ``ImportCSV`` class
         distributed with ViTables.
         """
-        from vitables.plugins.aboutpage import AboutPage
+        from .aboutpage import AboutPage
         desc = {
-            "version" : __version__,
+            "version" : _defaults["VERSION"],
             "module_name" : _defaults["MODULE_NAME"],
             "folder" : _defaults["FOLDER"],
             "author" : "{0:s} <{1:s}>".format(

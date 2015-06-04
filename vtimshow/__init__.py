@@ -3,6 +3,7 @@
 # Module imports
 import logging
 import os
+import pkg_resources
 
 import vitables
 
@@ -13,7 +14,6 @@ _defaults = dict(
     PLUGIN_CLASS = "VtImageViewer",
     PLUGIN_NAME = "Image Viewer",
     COMMENT = "Display data sets as images",
-    VERSION = "{VERSION!s}",
     UID = "image_viewer"
 )
 _defaults["FOLDER"], _defaults["MODULE_NAME"] = os.path.split(
@@ -21,6 +21,10 @@ _defaults["FOLDER"], _defaults["MODULE_NAME"] = os.path.split(
 )
 _defaults["LOGGER"] = logging.getLogger(_defaults["MODULE_NAME"])
 _defaults["LOGGER"].addHandler(logging.NullHandler())
+
+_defaults["VERSION"] = pkg_resources.get_distribution(
+    _defaults["MODULE_NAME"]
+).version
 
 __docformat__ = "restructuredtext"
 __version__ = _defaults["VERSION"]

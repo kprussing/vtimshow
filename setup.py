@@ -65,7 +65,7 @@ def find_package_datafiles(package):
 
 setup(
     name = "vtimshow",
-    version = read(os.path.join(os.path.dirname(__file__), "VERSION")),
+    version = read(os.path.join(os.path.dirname(__file__), "VERSION")).strip(),
     packages = find_packages(),
 
     description = _defaults["COMMENT"],
