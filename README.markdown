@@ -33,6 +33,14 @@ After running the install, launch ViTables, open the Preferences menu,
 select the Plugins tab, and enable Image Viewer.  Once you restart
 ViTables, you can right click on a data set and view it as an image.
 
+Preferences
+-----------
+
+The default ordering of the arrays in the file is assumed to be (Depth,
+Width, Height, RGB(A)).  To change this order, go to Preferences ->
+image_viewer and select the proper order.  To have this persist, simply
+hit save before exiting the preferences menu.
+
 ### Notes ###
 
 As noted in [Issue #33], the current development branch of ViTables

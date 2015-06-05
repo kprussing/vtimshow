@@ -12,6 +12,7 @@ from vitables.vtapp import translate
 
 from . import _defaults
 from .setdims import SetDims
+from .preferences import Preferences
 
 class ImageWindow(QtGui.QMdiSubWindow):
     """
@@ -21,7 +22,7 @@ class ImageWindow(QtGui.QMdiSubWindow):
     def __init__(self, leaf, parent):
         logger = logging.getLogger(__name__ +".ImageWindow")
         if leaf.node.ndim in (2,3,4):
-            self.data = leaf.node.read()
+            data = leaf.node.read()
         else:
             msg = translate(
                     _defaults["PLUGIN_CLASS"],
@@ -32,6 +33,33 @@ class ImageWindow(QtGui.QMdiSubWindow):
             raise RuntimeError(msg)
 
         super(ImageWindow, self).__init__(parent)
+
+        config = Preferences()
+        if leaf.node.ndim == 2:
+            self.data = data.transpose((
+                int(config["2D"]["Width"]),
+                int(config["2D"]["Height"])
+            ))
+        elif leaf.node.ndim == 3:
+            if data.shape[int(config["2D"]["RGB(A)"])] in (3,4):
+                self.data = data.transpose((
+                    int(config["2D"]["Width"]),
+                    int(config["2D"]["Height"]),
+                    int(config["2D"]["RGB(A)"])
+                ))
+            else:
+                self.data = data.transpose((
+                    int(config["3D"]["Depth"]),
+                    int(config["3D"]["Width"]),
+                    int(config["3D"]["Height"])
+                ))
+        else:
+            self.data = data.transpose((
+                int(config["4D"]["Depth"]),
+                int(config["4D"]["Width"]),
+                int(config["4D"]["Height"]),
+                int(config["4D"]["RGB(A)"])
+            ))
 
         self.image = pyqtgraph.ImageView()
         self.image.setImage(self.data)
