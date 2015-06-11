@@ -13,6 +13,7 @@ from vitables.vtapp import translate
 
 from . import _defaults
 from .setdims import SetDims
+from .framemath import FrameMath
 from .preferences import Preferences
 
 class ImageWindow(QtGui.QMdiSubWindow):
@@ -99,6 +100,8 @@ class ImageWindow(QtGui.QMdiSubWindow):
         vitables.utils.addToMenu(self.image.menu, action)
         action.triggered.connect(self.reshape)
 
+        self.framemath = FrameMath(self)
+
     def reshape(self):
         """Select different axis for displaying the image."""
         logger = logging.getLogger(__name__ +".ImageWindow.reshape")
@@ -159,7 +162,6 @@ class ImageWindow(QtGui.QMdiSubWindow):
             ]
         else:
             raise RuntimeError("This should never be possible")
-
 
         self.image.setImage(data)
         self.image.show()
