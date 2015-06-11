@@ -8,23 +8,26 @@ import pkg_resources
 import vitables
 
 _defaults = dict(
-    AUTHOR = "Keith F Prussing",
-    AUTHOR_EMAIL = "kprussing74@gmail.com",
-    LICENSE = "MIT",
     PLUGIN_CLASS = "VtImageViewer",
     PLUGIN_NAME = "Image Viewer",
-    COMMENT = "Display data sets as images",
-    UID = "image_viewer"
 )
 _defaults["FOLDER"], _defaults["MODULE_NAME"] = os.path.split(
     os.path.dirname(__file__)
 )
 _defaults["LOGGER"] = logging.getLogger(_defaults["MODULE_NAME"])
 _defaults["LOGGER"].addHandler(logging.NullHandler())
-
-_defaults["VERSION"] = pkg_resources.get_distribution(
-    _defaults["MODULE_NAME"]
-).version
+_dist = pkg_resources.get_distribution(_defaults["MODULE_NAME"])
+_defaults["VERSION"] = _dist.version
+pairs = (
+    ("AUTHOR", "Author:"),
+    ("AUTHOR_EMAIL", "Author-email:"),
+    ("LICENSE", "License:"),
+    ("COMMENT", "Summary:"),
+    ("UID", "Name:")
+)
+_metadata = _dist.get_metadata("PKG-INFO")
+for k1, k2 in pairs:
+    _defaults[k1] = _metadata.split(k2)[1].split("\n")[0].strip()
 
 __docformat__ = "restructuredtext"
 __version__ = _defaults["VERSION"]

@@ -3,9 +3,6 @@ import os
 
 from setuptools import setup, find_packages
 
-
-from vtimshow import _defaults
-
 def read(fname):
     """
     Utility function to read a file.
@@ -68,14 +65,14 @@ setup(
     version = read(os.path.join(os.path.dirname(__file__), "VERSION")).strip(),
     packages = find_packages(),
 
-    description = _defaults["COMMENT"],
+    description = "Display data sets as images",
     long_description = read(
         os.path.join(os.path.dirname(__file__), "README.markdown")
     ),
 
-    author = _defaults["AUTHOR"],
-    author_email = _defaults["AUTHOR_EMAIL"],
-    license = _defaults["LICENSE"],
+    author = "Keith F Prussing",
+    author_email = "kprussing74@gmail.com",
+    license = "MIT",
 
     install_requires = ["ViTables >2.1", "pyqtgraph"],
     dependency_links = [
@@ -83,8 +80,7 @@ setup(
     ],
 
     entry_points = {
-        "vitables.plugins" : 
-        _defaults["UID"] +" = vtimshow:VtImageViewer"
+        "vitables.plugins" : "vtimshow = vtimshow:VtImageViewer"
     },
 
     package_data={
