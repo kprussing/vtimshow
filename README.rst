@@ -42,6 +42,17 @@ Width, Height, RGB(A)).  To change this order, go to Preferences ->
 image_viewer and select the proper order.  To have this persist, simply
 hit save before exiting the preferences menu.
 
+Frame Math
+----------
+
+A panel to perform math on selected frames is under the menu button at
+the lower right of the image area.  Toggling this on will disable the
+original frame selector used by the image area and the normalization
+panel.  Instead, three frame selectors are placed in the time series
+plot.  These correspond to R, G, and B channels.  In the panel, the user
+may select to display these frames as a RGB image, subtracted monochrome
+image, or divided monochrome image.
+
 Notes
 =====
 
