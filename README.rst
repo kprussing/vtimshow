@@ -49,10 +49,10 @@ an archived download, please refer to `this patch`_ to aid in
 installation.  Alternatively, you can download the patched version of
 the development branch here_.
 
-.. _ViTables: http://vitables.org .. _PyQtGraph:
-http://www.pyqtgraph.org .. _Issue #11:
-https://github.com/uvemas/ViTables/issues/11 .. _Issue #33:
-https://github.com/uvemas/ViTables/issues/33 .. _this patch:
-https://github.com/kprussing/ViTables/commit/9ca932dc862704b30b7f49c997a35385cf59235c
+.. _ViTables: http://vitables.org 
+.. _PyQtGraph: http://www.pyqtgraph.org 
+.. _Issue #11: https://github.com/uvemas/ViTables/issues/11 
+.. _Issue #33: https://github.com/uvemas/ViTables/issues/33 
+.. _this patch: https://github.com/kprussing/ViTables/commit/9ca932dc862704b30b7f49c997a35385cf59235c
 .. _here: https://github.com/kprussing/ViTables/tree/install_fix
 
