@@ -46,13 +46,11 @@ hit save before exiting the preferences menu.
 As noted in `Issue #33`_, the current development branch of ViTables
 requires `setuptools-git` to work.  If you need to install ViTables from
 an archived download, please refer to `this patch`_ to aid in
-installation.  Alternatively, you can download the patched version of
-the development branch here_.
+installation.  
 
 .. _ViTables: http://vitables.org 
 .. _PyQtGraph: http://www.pyqtgraph.org 
 .. _Issue #11: https://github.com/uvemas/ViTables/issues/11 
 .. _Issue #33: https://github.com/uvemas/ViTables/issues/33 
-.. _this patch: https://github.com/kprussing/ViTables/commit/9ca932dc862704b30b7f49c997a35385cf59235c
-.. _here: https://github.com/kprussing/ViTables/tree/install_fix
+.. _this patch: https://github.com/kprussing/ViTables/commit/ef0ce8e2745ecb40ad8b45daa065b93551bac52c
 
