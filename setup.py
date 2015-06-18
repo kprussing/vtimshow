@@ -33,5 +33,4 @@ setup(
         "vitables.plugins" : "vtimshow = vtimshow:VtImageViewer"
     },
 
-    package_data={"vtimshow" : ["*.ui"],},
 )

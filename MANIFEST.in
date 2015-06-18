@@ -1,1 +1,2 @@
 include LICENSE VERSION
+recursive-include vtimshow *.ui
