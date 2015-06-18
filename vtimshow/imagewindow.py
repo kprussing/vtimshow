@@ -37,27 +37,27 @@ class ImageWindow(QtGui.QMdiSubWindow):
         config = Preferences()
         if leaf.node.ndim == 2:
             self.data = data.transpose((
-                int(config["2D"]["Width"]),
-                int(config["2D"]["Height"])
+                int(config["2D"]["Height"]),
+                int(config["2D"]["Width"])
             ))
         elif leaf.node.ndim == 3:
             if data.shape[int(config["2D"]["RGB(A)"])] in (3,4):
                 self.data = data.transpose((
-                    int(config["2D"]["Width"]),
                     int(config["2D"]["Height"]),
+                    int(config["2D"]["Width"]),
                     int(config["2D"]["RGB(A)"])
                 ))
             else:
                 self.data = data.transpose((
                     int(config["3D"]["Depth"]),
-                    int(config["3D"]["Width"]),
-                    int(config["3D"]["Height"])
+                    int(config["3D"]["Height"]),
+                    int(config["3D"]["Width"])
                 ))
         else:
             self.data = data.transpose((
                 int(config["4D"]["Depth"]),
-                int(config["4D"]["Width"]),
                 int(config["4D"]["Height"]),
+                int(config["4D"]["Width"]),
                 int(config["4D"]["RGB(A)"])
             ))
 
