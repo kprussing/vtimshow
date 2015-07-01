@@ -33,4 +33,5 @@ setup(
         "vitables.plugins" : "vtimshow = vtimshow:VtImageViewer"
     },
 
+    include_package_data=True,
 )
