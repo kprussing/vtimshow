@@ -49,6 +49,12 @@ def setup_logger(name):
     to see if ViTables is an active application.  If it is not, nothing
     is done.
 
+    Parameters
+    ----------
+
+    name : string
+        The name of the module to add to the ViTables logging window.
+
     """
     logger = logging.getLogger(name)
     app = vitables.utils.getApp()
