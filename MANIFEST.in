@@ -1,2 +1,2 @@
-include LICENSE VERSION index.rst
+include LICENSE VERSION index.rst Makefile make.bat conf.py
 recursive-include vtimshow *.ui
