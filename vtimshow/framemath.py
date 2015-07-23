@@ -9,7 +9,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 import vitables
-from vitables.vtapp import translate
+from vitables.vtapp import translate as _translate
 
 from . import _defaults
 from .utils import divide as _divide
@@ -59,7 +59,7 @@ class FrameMath:
 
         label_1 = QtGui.QLabel(self.group)
         label_1.setText(
-            translate(
+            _translate(
                 _defaults["PLUGIN_CLASS"], "Select Frames:", "Label"
             )
         )
@@ -159,7 +159,9 @@ class FrameMath:
         )
 
         self.group.setTitle(
-            translate(_defaults["PLUGIN_CLASS"], "Frame math", "Layout")
+            _translate(
+                _defaults["PLUGIN_CLASS"], "Frame math", "Layout"
+            )
         )
         self.group.hide()
 

@@ -6,7 +6,7 @@ import numpy
 from PyQt4 import QtGui
 
 import vitables
-from vitables.vtapp import translate
+from vitables.vtapp import translate as _translate
 
 from . import _defaults
 from .imagewindow import ImageWindow
@@ -41,7 +41,7 @@ class VtImageViewer:
         logger = logging.getLogger(__name__ +".VtImageViewer.imshow")
         indexes = vitables.utils.getSelectedIndexes()
         if len(indexes) != 1:
-            msg = translate(
+            msg = _translate(
                 _defaults["PLUGIN_CLASS"],
                 "Only one node can be viewed as an image at a time!",
                 "Plugin error message"
@@ -53,7 +53,7 @@ class VtImageViewer:
         leaf = dbg.nodeFromIndex(indexes[0])
         node = leaf.node
         if node.dtype.kind not in "iuf":
-            msg = translate(
+            msg = _translate(
                 _defaults["PLUGIN_CLASS"],
                 "Node must be a numeric type array!",
                 "Plugin error message"
@@ -63,7 +63,7 @@ class VtImageViewer:
 
         if not (node.ndim == 2 and 1 not in node.shape) \
                 and node.ndim not in (3,4):
-            msg = translate(
+            msg = _translate(
                 _defaults["PLUGIN_CLASS"],
                 "Node must be 2D, 3D or 4D.",
                 "Plugin error message"
@@ -97,7 +97,7 @@ class VtImageViewer:
             "author" : "{0:s} <{1:s}>".format(
                 _defaults["AUTHOR"], _defaults["AUTHOR_EMAIL"]
             ),
-            "comment" : translate(
+            "comment" : _translate(
                 _defaults["PLUGIN_CLASS"],
                 """
                 <qt>
