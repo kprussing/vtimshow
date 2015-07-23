@@ -43,7 +43,7 @@ image_viewer and select the proper order.  To have this persist, simply
 hit save before exiting the preferences menu.
 
 Frame Math
-----------
+==========
 
 A panel to perform math on selected frames is under the menu button at
 the lower right of the image area.  Toggling this on will disable the
