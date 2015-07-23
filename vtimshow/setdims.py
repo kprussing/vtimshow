@@ -12,6 +12,7 @@ from PyQt4 import uic
 Dimension = collections.namedtuple(
     "Dimension", ["dim", "start", "end", "stride"]
 )
+"""Convenience class for organizing dimensions."""
 
 class SetDims(QtGui.QDialog):
     """A dialog to reshape the image.
@@ -270,7 +271,7 @@ class SetDims(QtGui.QDialog):
 
         return Dimension(dim=idx, start=None, end=None, stride=None)
 
-def main():
+def _main():
     """Test the dialog."""
     import numpy
     import sys
@@ -288,5 +289,5 @@ def main():
     sys.exit(app.exec_())
 
 if __name__ == "__main__":
-    main()
+    _main()
 
