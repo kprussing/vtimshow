@@ -14,8 +14,6 @@ import logging
 import os
 import pkg_resources
 
-import vitables
-
 _defaults = dict(
     PLUGIN_CLASS = "VtImageViewer",
     PLUGIN_NAME = "Image Viewer",
@@ -47,27 +45,6 @@ comment = _defaults["COMMENT"]
 
 from vtimshow.vtimageviewer import VtImageViewer
 
-def _setup_logger(name):
-    """Add the GUI's logging window as a stream handler.
-
-    By default, the stream logger is removed during the invocation of
-    ViTables.  The logging window in the GUI is a stream handler for the
-    ViTables logger *only*.  This method will add the logging window in
-    the GUI as a stream handler for the named logger.  The method checks
-    to see if ViTables is an active application.  If it is not, nothing
-    is done.
-
-    """
-    logger = logging.getLogger(name)
-    app = vitables.utils.getApp()
-    if app is not None:
-        stream = logging.StreamHandler(app.gui.logger)
-        stream.setFormatter(
-            logging.Formatter(vitables.vtgui._GUI_LOG_FORMAT)
-        )
-        logger.addHandler(stream)
-
-    return
-
+from .utils import setup_logger as _setup_logger
 _setup_logger(_defaults["MODULE_NAME"])
 
