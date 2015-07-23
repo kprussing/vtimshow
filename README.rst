@@ -28,11 +28,22 @@ is currently the development branch.  The lowest know version of
 PyQtGraph that has been tested is 0.9.10.  Once those dependencies have
 been installed, run::
 
-    python setup.py install
+    $ python setup.py install
 
 After running the install, launch ViTables, open the Preferences menu,
 select the Plugins tab, and enable Image Viewer.  Once you restart
 ViTables, you can right click on a data set and view it as an image.
+
+Documentation
+^^^^^^^^^^^^^
+
+This project uses Sphinx_ to generate the typeset documentation.  To
+build the HTML documentation along with the API, simply run::
+
+    $ sphinx-apidoc -o . vtimshow -M
+    $ make html
+
+If you are on Windows, replace the last command with ``make.bat``.
 
 Preferences
 ===========
@@ -63,6 +74,7 @@ installation.
 
 .. _ViTables: http://vitables.org
 .. _PyQtGraph: http://www.pyqtgraph.org
+.. _Spinx: http://sphinx-doc.org/index.html
 .. _Issue #11: https://github.com/uvemas/ViTables/issues/11
 .. _Issue #33: https://github.com/uvemas/ViTables/issues/33
 .. _this patch: https://github.com/kprussing/ViTables/commit/ef0ce8e2745ecb40ad8b45daa065b93551bac52c
