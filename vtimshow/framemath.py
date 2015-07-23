@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+__doc__="""The module defining :class`FrameMath`."""
 
 import logging
 import numpy
@@ -10,23 +12,37 @@ import vitables
 from vitables.vtapp import translate
 
 from . import _defaults
+from .utils import divide as _divide
 
 class FrameMath:
-    """
-    The class to hold the parameters for frame math.
+    """The class to hold the parameters for frame math.
 
-    This class takes a reference to parent image window and the general
-    parent used to initialize the norm interface in the ImageView owned
-    by the parent.  The initializer adds the frame, adds a new menu
-    option, and connects all of the signals.  The class also keeps a
-    reference to the R, G, and B frames in the image stack
+    This class takes a reference to the parent :class:`ImageWindow`.  It
+    then adds a frame to the bottom of the :class:`pyqtgraph.ImageView`
+    embedded in the parent.  By default, this frame is hidden and a menu
+    option option to toggle visibility is added to the menu button in
+    the window.  When the frame is toggled on, the default frame
+    selector is toggled off.  Instead, color coded selector for R, G,
+    and B frames are added to the time series plot.  These may be
+    dragged along the axis or set with the connected spin boxes.  The
+    bottom of the frame ha radio buttons that will perform simple
+    arithmetic on the frames and display the monochrome results, or it
+    will display the RGB combination of the bands.
+
     """
     R = None
     G = None
     B = None
 
-    def __init__(self, parent, Form=None):
-        """
+    def __init__(self, parent):
+        """Initialize the math frame.
+
+        Parameters
+        ----------
+
+        parent : :class:`pyqtgraph.ImageView`
+            The parent widget holding the image
+
         """
         logger = logging.getLogger(__name__ +".FrameMath")
         #imageItem = parent.image.getImageItem()
@@ -36,7 +52,7 @@ class FrameMath:
         if len(image.shape) != 3 or image.shape[0] < 2:
             return
 
-        self.group = QtGui.QGroupBox(Form)
+        self.group = QtGui.QGroupBox()
         self.layout = QtGui.QGridLayout(self.group)
         self.layout.setMargin(0)
         self.layout.setSpacing(0)
@@ -156,27 +172,45 @@ class FrameMath:
         self.parent.image.menu.addAction(self.menuAction)
 
     def _r_line_changed(self):
+        """Update the R spin box and image."""
         self.rSpin.setValue(self.rLine.value())
         self._update_image()
 
     def _r_spin_changed(self):
+        """Update the R line."""
         self.rLine.setValue(self.rSpin.value())
 
     def _g_line_changed(self):
+        """Update the G spin box and image."""
         self.gSpin.setValue(self.gLine.value())
         self._update_image()
 
     def _g_spin_changed(self):
+        """Update the G line."""
         self.gLine.setValue(self.gSpin.value())
 
     def _b_line_changed(self):
+        """Update the B spin box and image."""
         self.bSpin.setValue(self.bLine.value())
         self._update_image()
 
     def _b_spin_changed(self):
+        """Update the B line."""
         self.bLine.setValue(self.bSpin.value())
 
     def toggled(self, b):
+        """Toggle the frame on and off.
+
+        Toggle the R, G, and B selectors to be visible when the frame is
+        and the default frame selector to be the opposite.
+
+        Parameters
+        ----------
+
+        b : bool
+            Passed by the menu signal.
+
+        """
         self.group.setVisible(b)
 
         for line in (self.rLine, self.gLine, self.bLine):
@@ -185,6 +219,7 @@ class FrameMath:
         self.parent.image.timeLine.setVisible(not b)
 
     def _rgb_frames(self):
+        """Programmatically get the frames."""
         image = self.parent.image.image
         R = image[self.rSpin.value(), :, :]
         G = image[self.gSpin.value(), :, :]
@@ -192,48 +227,35 @@ class FrameMath:
         return R, G, B
 
     def _show_rgb(self):
+        """Show the RGB image."""
         R, G, B = self._rgb_frames()
         image = numpy.dstack((R, G, B))
         imageItem = self.parent.image.getImageItem()
         imageItem.updateImage(image)
 
     def _show_r_minus_g(self):
+        """Compute and show :math:`R - G`."""
         R, G, B = self._rgb_frames()
         image = R - G
         imageItem = self.parent.image.getImageItem()
         imageItem.updateImage(image)
 
     def _show_r_minus_g_by_b(self):
+        """Compute and show :math:`(R - G) / B`."""
         R, G, B = self._rgb_frames()
-        image = self._divide((R - G), B)
+        image = _divide((R - G), B)
         imageItem = self.parent.image.getImageItem()
         imageItem.updateImage(image)
 
     def _show_r_by_g(self):
+        """Compute and show :math:`R / G`."""
         R, G, B = self._rgb_frames()
-        image = self._divide(R, G)
+        image = _divide(R, G)
         imageItem = self.parent.image.getImageItem()
         imageItem.updateImage(image)
 
-    def _divide(self, A, B):
-        """
-        Compute A / B element wise.
-
-        Given two NumPy arrays, perform the element wise division.
-        Replace all NaNs, Infs, and places where B == 0 with 0.
-        """
-        with numpy.errstate(invalid="ignore", divide="ignore"):
-            res = A / B
-
-        res[numpy.isclose(B, 0)] = 0
-        res[numpy.isnan(res)] = 0
-        res[numpy.isinf(res)] = 0
-        return res
-
     def _update_image(self):
-        """
-        Determine which button is pressed and refresh the image.
-        """
+        """Determine which button is pressed and refresh the image."""
         button = self.buttons.checkedButton()
         if button is None:
             return
