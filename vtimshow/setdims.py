@@ -271,9 +271,7 @@ class SetDims(QtGui.QDialog):
         return Dimension(dim=idx, start=None, end=None, stride=None)
 
 def main():
-    """
-    Test the dialog.
-    """
+    """Test the dialog."""
     import numpy
     import sys
     logging.basicConfig(level=logging.DEBUG)
