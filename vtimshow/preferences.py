@@ -35,7 +35,7 @@ class Preferences(configparser.ConfigParser):
     RGB(A) 3
 
     """
-    inifile = os.path.join(os.path.dirname(__file__), "preferences.ini")
+    _inifile = os.path.join(os.path.dirname(__file__),"preferences.ini")
 
     def __init__(self, inifile=None):
         """Initialize to the given file or use the defaults.
@@ -50,6 +50,8 @@ class Preferences(configparser.ConfigParser):
         super(Preferences, self).__init__()
         if inifile is not None:
             self.inifile = inifile
+        else:
+            self.inifile = self._inifile
 
         self.read(self.inifile)
         for dim in ("2D", "3D", "4D"):
