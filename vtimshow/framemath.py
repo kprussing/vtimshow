@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-__doc__="""The module defining :class`FrameMath`."""
+__doc__="""The module defining :class:`FrameMath`."""
 
 import logging
 import numpy
