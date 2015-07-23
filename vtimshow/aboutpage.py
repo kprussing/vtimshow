@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-"""
+__doc__="""The module defining the about page."""
 import logging
 import os
 
@@ -10,10 +9,33 @@ from PyQt4 import uic
 from .preferences import Preferences
 
 class AboutPage(QtGui.QWidget):
+    """The about page loaded by ViTables in the preferences window.
+
+    This is the module that is required by ViTables for the preferences
+    window.  It follows the format used by the CSV tools distributed
+    with ViTables and includes the module version, name, folder, author,
+    and comment.  It adds combo boxes to allow the user to define the
+    preferred orientation of the data sets in the files.  By default,
+    the arrays are assumed to be row-major order.  This places the index
+    of the time series as the first index of a 3D or 4D array.
+
+    """
 
     def __init__(self, desc, parent=None):
-        """
-        Initialize the about page.
+        """Initialize the about page.
+
+        The 'version', 'module_name', 'folder', 'author', and 'comment'
+        are extracted from the dictionary ``desc`` and stored as the
+        appropriate member variables.
+
+        Parameters
+        ----------
+
+        desc : dict
+            The description dictionary.
+        parent : QWidget, optional
+            The parent widget.
+
         """
         logger = logging.getLogger(__name__ +".AboutPage")
         super(AboutPage, self).__init__(parent)
@@ -63,9 +85,7 @@ class AboutPage(QtGui.QWidget):
         self.saveButton.clicked.connect(self.save)
 
     def update_config(self):
-        """
-        Update the configuration structure.
-        """
+        """Update the preferences configuration structure."""
         self.config["2D"]["Height"] = self.height_2d.currentText()
         self.config["2D"]["Width"] = self.width_2d.currentText()
         self.config["2D"]["RGB(A)"] = self.rgba_2d.currentText()
@@ -80,9 +100,7 @@ class AboutPage(QtGui.QWidget):
         self.config["4D"]["RGB(A)"] = self.rgba_4d.currentText()
 
     def save(self):
-        """
-        Write the file
-        """
+        """Write the configuration to file."""
         logger = logging.getLogger(__name__ +".AboutPage.save")
         logger.debug("Dump to file {0:s}".format(self.config.inifile))
         with open(self.config.inifile, "w") as fid:

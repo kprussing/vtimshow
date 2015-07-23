@@ -1,4 +1,5 @@
-ViTables Image Viewer 
+=====================
+ViTables Image Viewer
 =====================
 
 This is a plug-in to ViTables_ to view data sets as images.  It uses
@@ -12,14 +13,14 @@ This plug-in is designed to work with the development branch of ViTables
 (2.2a1), and, therefore, uses ``setuptools`` to declare the entry points
 into ``vitables.plugins``.
 
-Screen Shot 
------------
+Screen Shot
+===========
 
 .. image:: example/screen_shot_20150521T140720.png
 
 
-Installation 
-------------
+Installation
+============
 
 First, ensure that the correct version of ViTables_ and PyQtGraph_ are
 installed.  The minimum version of ViTables necessary is (2.2a1) which
@@ -33,24 +34,25 @@ After running the install, launch ViTables, open the Preferences menu,
 select the Plugins tab, and enable Image Viewer.  Once you restart
 ViTables, you can right click on a data set and view it as an image.
 
-Preferences 
------------
+Preferences
+===========
 
 The default ordering of the arrays in the file is assumed to be (Depth,
 Width, Height, RGB(A)).  To change this order, go to Preferences ->
 image_viewer and select the proper order.  To have this persist, simply
 hit save before exiting the preferences menu.
 
-### Notes ###
+Notes
+=====
 
 As noted in `Issue #33`_, the current development branch of ViTables
 requires `setuptools-git` to work.  If you need to install ViTables from
 an archived download, please refer to `this patch`_ to aid in
-installation.  
+installation.
 
-.. _ViTables: http://vitables.org 
-.. _PyQtGraph: http://www.pyqtgraph.org 
-.. _Issue #11: https://github.com/uvemas/ViTables/issues/11 
-.. _Issue #33: https://github.com/uvemas/ViTables/issues/33 
+.. _ViTables: http://vitables.org
+.. _PyQtGraph: http://www.pyqtgraph.org
+.. _Issue #11: https://github.com/uvemas/ViTables/issues/11
+.. _Issue #33: https://github.com/uvemas/ViTables/issues/33
 .. _this patch: https://github.com/kprussing/ViTables/commit/ef0ce8e2745ecb40ad8b45daa065b93551bac52c
 

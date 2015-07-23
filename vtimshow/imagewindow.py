@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+__doc__="""The module defining the image window widget."""
 import logging
 import numpy
 
@@ -15,11 +16,30 @@ from .setdims import SetDims
 from .preferences import Preferences
 
 class ImageWindow(QtGui.QMdiSubWindow):
-    """
-    The window to hold the image.
+    """The window to hold the image in the workspace of ViTables
+
+    This class defines the widget to live within the ViTables workspace
+    and instantiates a :class:`pyqtgraph.ImageView` to display the data
+    set.  The data set is loaded from the underlying file in the order
+    specified by :class:`preferences.Preferences`.  This also adds a
+    menu item to launch a :class:`setdims.SetDims` window to reshape the
+    array if the underlying order of the data set is not what is
+    specified in the preferences.
+
     """
 
     def __init__(self, leaf, parent):
+        """Load the data set and display it as an image.
+
+        Parameters
+        ----------
+
+        leaf : :class:`vitables.h5db.leafnode`
+            The leaf tree node to view
+        parent : :class:`PyQt4.QtGui.QMdiArea`
+            The workspace from ViTables
+
+        """
         logger = logging.getLogger(__name__ +".ImageWindow")
         if leaf.node.ndim in (2,3,4):
             data = leaf.node.read()
@@ -80,9 +100,7 @@ class ImageWindow(QtGui.QMdiSubWindow):
         action.triggered.connect(self.reshape)
 
     def reshape(self):
-        """
-        Select different axis for display
-        """
+        """Select different axis for displaying the image."""
         logger = logging.getLogger(__name__ +".ImageWindow.reshape")
         dims = SetDims(self.data)
         if dims.exec() == dims.Rejected:

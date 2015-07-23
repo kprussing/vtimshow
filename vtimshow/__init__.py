@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+__doc__="""The top level module for the image viewer plugin to ViTables.
+
+This package is a plugin for ViTables_ that allows viewing data sets as
+images instead of tables of numbers.  The plugin can be activated under
+the preferences menu in ViTables.
+
+.. _ViTables: http://vitables.org
+
+"""
 
 # Module imports
 import logging
@@ -39,15 +48,14 @@ comment = _defaults["COMMENT"]
 from vtimshow.vtimageviewer import VtImageViewer
 
 def _setup_logger(name):
-    """
-    Add the GUI's logging window as a stream handler.
+    """Add the GUI's logging window as a stream handler.
 
     By default, the stream logger is removed during the invocation of
-    ``vitables``.  The logging window in the GUI is a stream handler for
-    the ``vitables`` logger _only_.  This method will add the logging
-    window in the GUI as a stream handler for the named logger.  The
-    method checks to see if ``vitables`` is an active application.  If
-    it is not, nothing is done.
+    ViTables.  The logging window in the GUI is a stream handler for the
+    ViTables logger *only*.  This method will add the logging window in
+    the GUI as a stream handler for the named logger.  The method checks
+    to see if ViTables is an active application.  If it is not, nothing
+    is done.
 
     """
     logger = logging.getLogger(name)

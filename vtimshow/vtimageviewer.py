@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+__doc__="""The module defining the interface class."""
 import logging
 import numpy
 
@@ -11,13 +12,19 @@ from . import _defaults
 from .imagewindow import ImageWindow
 
 class VtImageViewer:
-    """
+    """The interface class needed by ViTables
+
+    This is the high level class needed to plug into ViTables.  It
+    adds the necessary menu options to the appropriate menu(s) and
+    defines the methods to launch any desired actions.
+
     """
     UID = _defaults["UID"]
     NAME = _defaults["PLUGIN_NAME"]
     COMMENT = _defaults["COMMENT"]
 
     def __init__(self, parent=None):
+        """Add the menu items and connect the actions."""
         #super(VtImageViewer, self).__init__(parent)
         logger = logging.getLogger(__name__ +".VtImageViewer")
         logger.debug("Constructor called")
@@ -30,9 +37,7 @@ class VtImageViewer:
         vitables.utils.addToLeafContextMenu(action)
 
     def imshow(self):
-        """
-        Generate the image.
-        """
+        """Generate an image from a data set in the workspace."""
         logger = logging.getLogger(__name__ +".VtImageViewer.imshow")
         indexes = vitables.utils.getSelectedIndexes()
         if len(indexes) != 1:
@@ -73,8 +78,16 @@ class VtImageViewer:
     def helpAbout(self, parent):
         """Full description of the plugin.
 
-        This is adapted from the code used in the ``ImportCSV`` class
+        The help about page needed by ViTables to recognize a plug-in.
+        This has been adapted from the code used in :class:`ImportCSV`
         distributed with ViTables.
+
+        Parameters
+        ----------
+
+        parent : :class:`PyQt4.QtGui.QWidget`
+            The parent object provided by ViTables
+
         """
         from .aboutpage import AboutPage
         desc = {
