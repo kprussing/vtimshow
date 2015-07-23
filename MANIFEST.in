@@ -1,2 +1,2 @@
-include LICENSE VERSION
+include LICENSE VERSION index.rst
 recursive-include vtimshow *.ui
