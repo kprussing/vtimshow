@@ -39,7 +39,7 @@ def divide(A, B, rep=0.0):
     C[numpy.isinf(C)] = rep
     return C
 
-def setup_logger(name):
+def setup_logger(name, stderr=False):
     """Add the GUI's logging window as a stream handler.
 
     By default, the stream logger is removed during the invocation of
@@ -54,6 +54,8 @@ def setup_logger(name):
 
     name : string
         The name of the module to add to the ViTables logging window.
+    stderr : bool
+        Add the standard error as a stream handler too.
 
     """
     logger = logging.getLogger(name)
@@ -64,6 +66,9 @@ def setup_logger(name):
             logging.Formatter(vitables.vtgui._GUI_LOG_FORMAT)
         )
         logger.addHandler(stream)
+
+        if stderr:
+            logger.addHandler(logging.StreamHandler())
 
     return
 
