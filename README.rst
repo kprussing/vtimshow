@@ -74,7 +74,14 @@ image, or divided monochrome image.
 Cube Math
 ^^^^^^^^^
 
-Add the documentation about the cube math.
+The cube math window allows for comparing data from different data sets.
+After selecting up to three data sets, you can right click and select
+“Compare Datasets” to bring up the window.  The red, green, and blue
+channels each have a panel at the bottom where you can select the
+appropriate data set for each color.  You can then use the slider or the
+spin box to select the particular frame for processing.  The available
+operations are listed in the panel to the right of the color assignment
+panels.
 
 Filter Plugins
 ^^^^^^^^^^^^^^

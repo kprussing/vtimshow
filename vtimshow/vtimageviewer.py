@@ -10,6 +10,7 @@ from vitables.vtapp import translate as _translate
 
 from . import _defaults
 from .imagewindow import ImageWindow
+from .multicubemath import MultiCubeMath
 
 class VtImageViewer:
     """The interface class needed by ViTables
@@ -30,11 +31,21 @@ class VtImageViewer:
         logger.debug("Constructor called")
 
         gui = vitables.utils.getGui()
-        action = QtGui.QAction("Image View", gui)
-        action.setStatusTip("View as image")
-        action.triggered.connect(self.imshow)
+        actions = []
 
-        vitables.utils.addToLeafContextMenu(action)
+        actions.append(QtGui.QAction("Image View", gui))
+        actions[-1].setStatusTip("View as image")
+        actions[-1].triggered.connect(self.imshow)
+
+        actions.append(QtGui.QAction("Compare Datasets", gui))
+        actions[-1].setStatusTip(_translate(
+            _defaults["PLUGIN_CLASS"],
+            "Begin comparing data sets",
+            "Plugin tool tip"
+        ))
+        actions[-1].triggered.connect(self.launch_compare)
+
+        vitables.utils.addToLeafContextMenu(actions)
 
     def imshow(self):
         """Generate an image from a data set in the workspace."""
@@ -74,6 +85,11 @@ class VtImageViewer:
         workspace = vitables.utils.getGui().workspace
 
         window = ImageWindow(leaf, parent=workspace)
+
+    def launch_compare(self):
+        """Launch the multiple data set comparison."""
+        workspace = vitables.utils.getGui().workspace
+        window = MultiCubeMath(parent=workspace)
 
     def helpAbout(self, parent):
         """Full description of the plugin.
