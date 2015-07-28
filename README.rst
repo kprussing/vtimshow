@@ -14,13 +14,13 @@ This plug-in is designed to work with the development branch of ViTables
 into ``vitables.plugins``.
 
 Screen Shot
-===========
+-----------
 
 .. image:: example/screen_shot_20150521T140720.png
 
 
 Installation
-============
+------------
 
 First, ensure that the correct version of ViTables_ and PyQtGraph_ are
 installed.  The minimum version of ViTables necessary is (2.2a1) which
@@ -35,7 +35,7 @@ select the Plugins tab, and enable Image Viewer.  Once you restart
 ViTables, you can right click on a data set and view it as an image.
 
 Documentation
-=============
+-------------
 
 This project uses Sphinx_ to generate the typeset documentation.  To
 build the HTML documentation along with the API, simply run::
@@ -46,15 +46,22 @@ build the HTML documentation along with the API, simply run::
 If you are on Windows, replace the last command with ``make.bat``.
 
 Preferences
-===========
+-----------
 
 The default ordering of the arrays in the file is assumed to be (Depth,
 Width, Height, RGB(A)).  To change this order, go to Preferences ->
 image_viewer and select the proper order.  To have this persist, simply
 hit save before exiting the preferences menu.
 
+Image Math
+----------
+
+Two different methods are provided to do math operations on the data
+sets.  The first performs operations within a single data set.  The
+second performs operations on different but compatible data sets.
+
 Frame Math
-==========
+^^^^^^^^^^
 
 A panel to perform math on selected frames is under the menu button at
 the lower right of the image area.  Toggling this on will disable the
@@ -64,8 +71,31 @@ plot.  These correspond to R, G, and B channels.  In the panel, the user
 may select to display these frames as a RGB image, subtracted monochrome
 image, or divided monochrome image.
 
+Cube Math
+^^^^^^^^^
+
+Add the documentation about the cube math.
+
+Filter Plugins
+^^^^^^^^^^^^^^
+
+In addition to performing mathematical operations on the monochrome
+frames from a data cube, the cube math panel provides a way to apply
+filters to a full data cube.  On the far right of each color selector
+row is a drop down menu to select a filter.  The selected filter is then
+applied to the data cube to reduce it to a monochrome image.  Included
+with this package are filters to apply a scaled human eye response for
+the red, green, and blue colors.  These filters assume the data cube
+maps on the full visible band and the response is scaled from 0 to 1.
+Additional filters can be added by defining an entry point in your
+``setup.py`` to the ``vtimshow.filters`` group.  The only requirements
+are that the name of the filter must be unique, the target object must
+have a ``name`` attribute that is used in the drop down menu, and the
+target object must have a method ``compute(array)`` that accepts a
+(N,H,W) NumPy array and reduces it to a (H,W) NumPy array.
+
 Notes
-=====
+-----
 
 As noted in `Issue #33`_, the current development branch of ViTables
 requires `setuptools-git` to work.  If you need to install ViTables from

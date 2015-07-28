@@ -30,8 +30,15 @@ setup(
     ],
 
     entry_points = {
-        "vitables.plugins" : "vtimshow = vtimshow:VtImageViewer"
+        "vitables.plugins" : "vtimshow = vtimshow:VtImageViewer",
+        "vtimshow.filters" : [
+            "nofilter = vtimshow.filters.nofilter",
+            "visred = vtimshow.filters.scaledhumaneye:Red",
+            "visgreen = vtimshow.filters.scaledhumaneye:Green",
+            "visblue = vtimshow.filters.scaledhumaneye:Blue",
+        ]
     },
 
     include_package_data=True,
 )
+
