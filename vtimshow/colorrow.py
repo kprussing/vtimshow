@@ -105,28 +105,75 @@ class ColorRow(QtGui.QGroupBox):
         logger.debug("Index type {0!s}".format(index))
 
     def _update_combobox(self):
-        """Update the combo box with the current open files."""
+        """Update the combo box with the currently expanded groups.
+
+        Traverse the tree model and populate the data set combo box with
+        the leaf names of the leaf datasets that are currently open or
+        have been opened and placed into the ViTables index model.  We
+        do this because ViTables does not establish the
+        :class:`PyQt4.QtCore.QModelIndex` of a leaf node until it has
+        been expanded in the tree viewer.  This is reasonable because
+        the users will most likely want to compare data sets from
+        closely related groups.  The down side is the user must expand
+        the group tree out to the leafs before it will be populated in
+        the combo box.
+
+        """
         # The open files can be found from the data base tree model in
         # the GUI.
+        logger = logging.getLogger(
+            __name__ +".ColorRow._update_combobox"
+        )
         gui = vitables.utils.getGui()
         databases = gui.dbs_tree_model
+
+        # Put the root objects onto the stack.  These represent the file
+        # objects in the tree.  We also include a boolean to flag that
+        # this item has not been touched.
+        stack = [
+            (index, False) for index in
+            databases.indexChildren(QtCore.QModelIndex())
+        ]
         groups = (tables.group.RootGroup, tables.group.Group)
-        for filename in databases.getDBList():
-            db = databases.getDBDoc(filename)
-            for nodepath in db.listNodes():
-                node = db.getNode(nodepath)
-                if isinstance(node, groups):
+        while len(stack) > 0:
+            # Pop an index and flag out of the stack.
+            index, seen = stack.pop()
+            node = databases.nodeFromIndex(index)
+            if node.name == "Query results":
+                # Ignore the query results.
+                continue
+
+            if seen or not databases.hasChildren(index):
+                #logger.debug("Node type {0!s}".format(node))
+                # If the index does not have children or we have already
+                # seen this item, process it.
+                if isinstance(node.node, groups):
+                    # Skip the root and group nodes.  We have already
+                    # reviewed the children.
                     continue
 
-                if node.dtype.kind not in "iuf":
+                if node.node.dtype.kind not in "iuf":
+                    # It must be a numeric array
                     continue
 
-                if node.ndim not in (2,3,4):
+                if node.node.ndim not in (2,3,4):
+                    # Make sure it can be an image.
                     continue
 
-                label = "{0:s} {1:s}".format(db.filename, nodepath)
+                label = "{0:s} {1:s}".format(
+                    os.path.split(node.node._v_file.filename)[-1],
+                    node.node._v_pathname
+                )
                 if self._combo_box.findText(label) == -1:
-                    self._combo_box.addItem(label, node)
+                    self._combo_box.addItem(label, index)
+
+                #logger.debug("Node: {0!s}".format(node.name))
+            else:
+                # Before we process this index, mark it as seen and
+                # process its children.
+                stack.append((index, True))
+                for idx in databases.indexChildren(index):
+                    stack.append((idx, False))
 
     def _node_changed(self):
         """Update the current node.
@@ -137,8 +184,16 @@ class ColorRow(QtGui.QGroupBox):
 
         """
         logger = logging.getLogger(__name__ +".ColorRow._node_changed")
+        databases = vitables.utils.getGui().dbs_tree_model
         index = self._combo_box.currentIndex()
-        self.data = self._combo_box.itemData(index)
+        self.index = self._combo_box.itemData(index)
+        #logger.debug("Index type {0!s}".format(self.index))
+        if self.index is None:
+            self.data = None
+        else:
+            self.data = databases.nodeFromIndex(self.index).node
+
+        #logger.debug("Node type {0!s}".format(self.data))
         self._spin_box.setValue(0)
         if self.data is not None and len(self.data.shape) > 2:
             if len(self.data.shape) == 3:
@@ -161,9 +216,6 @@ class ColorRow(QtGui.QGroupBox):
             self._plot.setEnabled(False)
             self._spin_box.setEnabled(False)
             self._filter.setEnabled(False)
-
-        logger.debug("Node type {0!s}".format(self.data))
-        #logger.debug("Node path {0!s}".format(self.data._v_pathname))
 
     def _line_moved(self):
         """Make the line and combo box track each other."""

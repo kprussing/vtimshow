@@ -83,6 +83,11 @@ spin box to select the particular frame for processing.  The available
 operations are listed in the panel to the right of the color assignment
 panels.
 
+The left hand drop down menu is automatically populated with the name of
+all of the leaf data sets that have been exposed in the database tree
+viewer.  In order for a particular dataset to appear in this list, you
+must have expanded the tree viewer to expose the desired leaf node.
+
 Filter Plugins
 ^^^^^^^^^^^^^^
 

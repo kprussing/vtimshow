@@ -104,10 +104,11 @@ class MultiCubeMath(QtGui.QMdiSubWindow):
         leaf.  If all values are ``None``, it does not change the leaf.
 
         """
-        dbt = vitables.utils.getGui().dbs_tree_model
-        for idx in (self.red_index, self.green_index, self.blue_index):
-            if idx is not None:
-                self.dbt_leaf = dbt.nodeFromIndex(idx)
+        databases = vitables.utils.getGui().dbs_tree_model
+        for color in self._colors.values():
+            if color.index os not None:
+                self.dbt_leaf = databases.nodeFromIndex(index)
+                break
 
     def _add_color_panels(self, indexes):
         """Add the color channels to the window.
