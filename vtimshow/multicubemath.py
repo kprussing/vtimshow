@@ -19,9 +19,17 @@ from .utils import divide
 class MultiCubeMath(QtGui.QMdiSubWindow):
     """The class to perform cross data set frame math.
 
-    This window does awesomeness with the awesome.  It takes like *two
-    or three* cubes and does like **math**!!! OMGROFLOLWTFPDQBACH!!!!
-    **I know right!!**
+    This class defines the window that can compare multiple datasets.
+    The main portion of the window is a :class:`pyqtgraph.ImageView`
+    that displays the resultant image.  The user assigns each color to a
+    dataset that has been revealed in the tree viewer and then selects
+    the mathematical operation to perform on the datasets.  If the user
+    selects datasets that cannot be used in a valid equation, the
+    corresponding buttons are disabled.
+
+    ..  note::  The ability to work with 4D arrays is included; however,
+                this functionality is considered experimental because a
+                set of 4D test data sets is not currently available.
 
     """
 
@@ -109,9 +117,7 @@ class MultiCubeMath(QtGui.QMdiSubWindow):
             )
 
     def _add_math_group(self):
-        """Create a panel to hold the math options.
-
-        """
+        """Create a panel to hold the math options."""
         self._math_group = QtGui.QGroupBox()
         self._math_layout = QtGui.QGridLayout(self._math_group)
         self._math_layout.setMargin(0)
@@ -176,10 +182,11 @@ class MultiCubeMath(QtGui.QMdiSubWindow):
         """Have the ``dbt_leaf`` mirror one of the leaves.
 
         This ensures that at least one node is assigned to the leaf.  If
-        it were not, we would get obnoxious error when the application
-        was closed with subwindow open.  It cycles through three colors
-        looking for the first one that is not ``None`` and uses that
-        leaf.  If all values are ``None``, it does not change the leaf.
+        it were not, we would get an obnoxious error when the
+        application was closed with subwindow open.  It cycles through
+        the three colors looking for the first one that is not ``None``
+        and uses that leaf.  If all values are ``None``, it does not
+        change the leaf.
 
         """
         databases = vitables.utils.getGui().dbs_tree_model
@@ -189,7 +196,7 @@ class MultiCubeMath(QtGui.QMdiSubWindow):
                 break
 
     def _update_image(self):
-        """Call all routines after updating the image."""
+        """Call all update routines after updating the image."""
         self._update_math_group()
         button = self._math_buttons.checkedButton()
         if button is not None and button.isEnabled():
@@ -200,7 +207,7 @@ class MultiCubeMath(QtGui.QMdiSubWindow):
         """Ensure only reasonable math can be performed.
 
         When a leaf node has been changed, we need to make sure only
-        rational math can be performed.  I a particular color has been
+        rational math can be performed.  If a particular color has been
         set to the null value, we disable any math that uses that color.
         After that check, we take the red channel as the standard and
         make sure that we can generate a sane image.  For example, it
