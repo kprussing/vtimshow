@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-__doc__="""The module to define the filter class."""
+__doc__="""The module defining the filter class."""
 import logging
 import pkg_resources
 
@@ -7,14 +7,17 @@ from PyQt4 import QtGui
 
 from .nofilter import name as _no_filter_name
 
+from .. import _defaults
+from vitables.vtapp import translate as _translate
+
 class Filters(QtGui.QComboBox):
     """The drop in replacement for the filter selection combo box.
 
-    This class takes iterates over all of the valid entry points
-    provided in the group ``vtimshow.filters`` and populates it's combo
-    box with the names of the entry points.  To be a valid entry point,
-    the object referenced by the entry point must have a ``name``
-    variable that provides a string to use in the combo box and a
+    This class iterates over all of the valid entry points provided in
+    the group ``vtimshow.filters`` from ``setuptools`` and populates
+    it's combo box with the names of the entry points.  To be valid, the
+    object referenced by the entry point must have a ``name`` variable
+    that provides a string to use in the combo box and a
     ``comupte(array)`` method that accepts a ``(N,H,W)`` array and
     either reduces it to a ``(H,W)`` array or returns ``None``.
 
@@ -37,12 +40,12 @@ class Filters(QtGui.QComboBox):
         """Find all filters that pass a quick check.
 
         To pass the quick check, a filter must define a ``name``
-        variable at the top scope of the plugin  that is a string and
-        define a function named ``compute``.  All plugins that have both
+        variable and a ``compute`` method at the top scope of the object
+        referenced by the entry point.  All plugins that have both
         attributes are then added to the internal combo box.  The first
         item will be the :class:`nofilter` plugin because it is
         distributed with this class.  The remaining filters will be
-        placed in alphabetical order.  If two plugins use the same name
+        placed in alphabetical order.  If two plugins use the same value
         for the ``name`` attribute, a RuntimeError is raised.
 
         ..  note::  This method does not check if the plugin provides
@@ -56,7 +59,7 @@ class Filters(QtGui.QComboBox):
 
         RuntimeError:
             If two plugins have the same value in the ``name``
-            attribute.
+            attribute or it the default :class:`nofilter` is missing.
 
         """
         logger = logging.getLogger(__name__ +".Filters.find_filters")
@@ -71,7 +74,11 @@ class Filters(QtGui.QComboBox):
                     msg = "{0:s} used twice!  Please contact the " \
                         +"author(s) of the plugins to establish a " \
                         +"unique name for each."
-                    raise RuntimeError(msg.format(loaded.name))
+                    raise RuntimeError(_translate(
+                        _defaults["PLUGIN_CLASS"],
+                        msg.format(loaded.name),
+                        "Plugin error message"
+                    ))
 
                 self._plugins[loaded.name] = loaded.compute
                 if loaded.name == _no_filter_name:
@@ -81,14 +88,22 @@ class Filters(QtGui.QComboBox):
             except AttributeError as err:
                 miss = str(err).split()[-1][1:-1]
                 if miss in ("name", "compute"):
-                    msg = "Skipping poorly formed filter {0:s}!  " \
+                    msg = "Skipping poorly formed filter {0!s}!  " \
                         "{2:s} is missing"
-                    logger.warn(msg)
+                    logger.warn(_translate(
+                        _defaults["PLUGIN_CLASS"],
+                        msg.format(entry, miss),
+                        "Plugin error message"
+                    ))
                 else:
                     raise
 
         if self.count() == 0:
-            raise RuntimeError("Required no filter plugin missing!")
+            raise RuntimeError(_translate(
+                _defaults["PLUGIN_CLASS"],
+                "Required no filter plugin missing!",
+                "Plugin error message"
+            ))
 
         items = sorted(self._plugins)
         items.pop(items.index(_no_filter_name))
@@ -120,7 +135,11 @@ class Filters(QtGui.QComboBox):
             ret = self._plugins[filt](array)
         except RuntimeError as err:
             msg = "Error applying {0:s}.  Message {1!s}"
-            logger.warning(msg.format(filt, err))
+            logger.warning(_translate(
+                _defaults["PLUGIN_CLASS"],
+                msg.format(filt, err),
+                "Plugin error message"
+            ))
             ret = None
 
         return ret

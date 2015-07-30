@@ -5,32 +5,36 @@ __doc__="""The human eye response filters.
 This collects the filters for applying the scaled spectral response of
 the human eye to the provided array
 
-..  math::  \\int_0^1 \\overbar{R}(u)I(Nu) du
+..  math::  \\int_0^1 \\overline{R}(u)I(Nu) du
 
-where :math:`\\overbar{R}(u)` is the red, blue or green spectral
+where :math:`\\overline{R}(u)` is the red, blue or green spectral
 response of the human eye scaled such that the response is in the range
 :math:`[0.0, 1.0]`, the wavelengths have been mapped to :math:`u \\in
 [0.0, 1.0]`, and :math:`N = \\text{(Number of frames)} - 1` is the
 number of frames in the image less one.  The values for the wavelengths
-and response are taken from the first and second columns of the file
-'stockman_spectral_2000-table-3.csv' distributed with this filter
-respectively.  To evaluate the integral, we only have to evaluate the
-spectral response at :math:`I/(N-1)` for each frame.
+are taken from the first column, and the red, green, and blue responses
+are second through fourth column respectively of the file
+'stockman_spectral_2000-table-3.csv' distributed with this filter.  To
+evaluate the integral, we only have to evaluate the spectral response at
+:math:`I/(N-1)` for each frame.
 
 """
 import pkg_resources
 import numpy
 import scipy.interpolate
 
+from .. import _defaults
+from vitables.vtapp import translate as _translate
+
 def apply_spectrum(array, color):
     """Apply the ``color`` spectrum to ``array``.
 
     Compute 
 
-    ..  math::  \\sum_{n=0}^{N-1} \\overbar{R}(\\frac{n}{N-1) I_{n,m}
+    ..  math::  \\sum_{n=0}^{N-1} \\overline{R}(\\frac{n}{N-1}) I_{n,m}
 
-    where :math:`\\overbar{R}` is the red, green, or blue scaled
-    spectrum specified in ``color`` and :math:`I_{n,m}` is the nth frame
+    where :math:`\\overline{R}` is the red, green, or blue scaled
+    spectrum specified by ``color`` and :math:`I_{n,m}` is the nth frame
     of the mth image in ``array``.
 
     Parameters
@@ -55,13 +59,19 @@ def apply_spectrum(array, color):
 
     """
     if array.ndim != 3:
-        raise RuntimeError(
-            "Invalid array with dimension {0:d}".format(array.ndim)
-        )
+        raise RuntimeError(_translate(
+            _defaults["PLUGIN_CLASS"],
+            "Invalid array with dimension {0:d}".format(array.ndim),
+            "Plugin error message"
+        ))
 
     if color not in _spectrum:
         msg = "Unknown response {0!s}!  Should be in {1!s}"
-        raise RumtimeError(msg.format(color, list(_spectrum.keys())))
+        raise RumtimeError(_translate(
+            _defaults["PLUGIN_CLASS"],
+            msg.format(color, list(_spectrum.keys())),
+            "Plugin error message"
+        ))
 
     xx = numpy.linspace(0, array.shape[0] -1, array.shape[0]) \
         /(array.shape[0] -1)
@@ -76,8 +86,8 @@ def load_spline_data(csvfile="stockman_spectral_2000-table-3.csv"):
 
     Assume that the CSV file has four columns.  The first column is the
     wavelength, and the second through fourth are the red, blue, and
-    green responses respectively.  Then, independently scale each column
-    to the range [0,1].  Next, compute the spline parameters for each
+    green responses respectively.  Then, scale each column to the range
+    [0,1].  Next, compute the spline parameters for each
     wavelength/color combination and store the result in a dictionary
     using the color as the key.
 
@@ -86,7 +96,7 @@ def load_spline_data(csvfile="stockman_spectral_2000-table-3.csv"):
 
     csvfile : string
         The path to the CSV file to be passed to
-        :`func`pkg_resources.resource_stream`.
+        :func:`pkg_resources.resource_stream`.
 
     Returns
     -------
@@ -106,9 +116,11 @@ def load_spline_data(csvfile="stockman_spectral_2000-table-3.csv"):
         delimiter=","
     )
     if data.shape[1] != 4:
-        raise RuntimeError(
-            "{0:s} does not have four columns!".format(csvfile)
-        )
+        raise RuntimeError(_translate(
+            _defaults["PLUGIN_CLASS"],
+            "{0:s} does not have four columns!".format(csvfile),
+            "Plungin error message"
+        ))
 
     colors = ("red", "green", "blue")
     ret = {}
