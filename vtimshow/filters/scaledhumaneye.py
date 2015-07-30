@@ -63,7 +63,8 @@ def apply_spectrum(array, color):
         msg = "Unknown response {0!s}!  Should be in {1!s}"
         raise RumtimeError(msg.format(color, list(_spectrum.keys())))
 
-    xx = numpy.linspace(0, array.shape[0] -1) /(array.shape[0] -1)
+    xx = numpy.linspace(0, array.shape[0] -1, array.shape[0]) \
+        /(array.shape[0] -1)
     yy = scipy.interpolate.splev(xx, _spectrum[color]).reshape(
         (array.shape[0], 1, 1)
     )
@@ -127,7 +128,8 @@ class Red:
     name = "Scaled red"
     """Filter name"""
 
-    def compute(self, array):
+    @staticmethod
+    def compute(array):
         """Apply the scaled red human eye response.
         
         Call :func:`apply_spectrum` with ``color='red'``.
@@ -145,14 +147,15 @@ class Red:
             The reduced image.
 
         """
-        return apply_array(array, "red")
+        return apply_spectrum(array, "red")
 
 class Green:
     """The human eye scaled green response."""
     name = "Scaled green"
     """Filter name"""
 
-    def compute(self, array):
+    @staticmethod
+    def compute(array):
         """Apply the scaled green human eye response.
         
         Call :func:`apply_spectrum` with ``color='green'``.
@@ -167,17 +170,18 @@ class Green:
         -------
 
         ret : :class:`numpy.ndarray`
-            The greenuced image.
+            The reduced image.
 
         """
-        return apply_array(array, "green")
+        return apply_spectrum(array, "green")
 
 class Blue:
     """The human eye scaled blue response."""
     name = "Scaled blue"
     """Filter name"""
 
-    def compute(self, array):
+    @staticmethod
+    def compute(array):
         """Apply the scaled blue human eye response.
         
         Call :func:`apply_spectrum` with ``color='blue'``.
@@ -192,8 +196,8 @@ class Blue:
         -------
 
         ret : :class:`numpy.ndarray`
-            The blueuced image.
+            The reduced image.
 
         """
-        return apply_array(array, "blue")
+        return apply_spectrum(array, "blue")
 
