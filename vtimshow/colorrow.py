@@ -20,28 +20,18 @@ from .filters.nofilter import name as _no_filter_name
 class ColorRow(QtGui.QGroupBox):
     """A class to hold a row for assigning the color channels.
 
-    This is a group divided into four columns.  The first is a combo box
-    listing all of the available leaf nodes open in the application.
+    This is a Qt group divided into four columns.  The first is a combo
+    box listing all of the available leaf nodes open in the application.
     The middle column is a PyQtGraph horizontal axis analogous to the
     :class:`pyqtgraph.ImageView.roiPlot` with a vertical line for
     selecting the frame.  The third column is a spin box connected to
     the horizontal selector in the middle.  The fourth column is a combo
-    box to select an extension to applying RGB weights to the data
-    cubes.
+    box to select an extension to apply a ``vtimshow.filters`` filter to
+    the dataset.
 
     ..  note::  The current implementation does not allow for reshaping
-                the data sets.  The *must* be stored in the order listed
+                the datasets.  The *must* be stored in the order listed
                 in the :class:`preferences.Preferences`.
-
-    Parameters
-    ----------
-
-    parent : :class:`PyQt4.QtGui.QWidget`
-        The parent object.  Most likely the MultiCubeMath window.
-    index : ViTables index
-        The index of the leaf node to process.
-    color : string
-        The pyqtgraph color of the line in the horizontal selector.
 
     """
     frame_changed = QtCore.Signal()
@@ -56,7 +46,7 @@ class ColorRow(QtGui.QGroupBox):
         parent : :class:`MultiCubeMath`
             The window that will hold the color row.
         index : :class:`PyQt4.QtCore.QModelIndex` or ``None``
-            The index of a data set in a revealed group.
+            The index of a dataset in a revealed group.
         color : string
             A valid color parameter to pass to PyQtGraph.
 
@@ -118,19 +108,19 @@ class ColorRow(QtGui.QGroupBox):
     def _update_combobox(self):
         """Update the combo box with the currently expanded groups.
 
-        Traverse the tree model and populate the data set combo box with
+        Traverse the tree model and populate the dataset combo box with
         the leaf names of the leaf datasets that are currently open or
         have been opened and placed into the ViTables index model.  We
         do this because ViTables does not establish the
         :class:`PyQt4.QtCore.QModelIndex` of a leaf node until it has
         been expanded in the tree viewer.  This is reasonable because
-        the users will most likely want to compare data sets from
+        the users will most likely want to compare datasets from
         closely related groups.  The down side is the user must expand
         the group tree out to the leafs before it will be populated in
         the combo box.
 
         """
-        # The open files can be found from the data base tree model in
+        # The open files can be found from the database tree model in
         # the GUI.
         logger = logging.getLogger(
             __name__ +".ColorRow._update_combobox"
@@ -281,12 +271,12 @@ class ColorRow(QtGui.QGroupBox):
     def get_frame(self):
         """Return the currently selected frame.
 
-        Load the data set into memory from file.  If the array is a
-        monochrome or RGB(A) 2D image, simply return it.  If the image
-        is 4D, select the frame from the spin box and return that frame.
-        Otherwise, if the image is a (N,H,W) array, apply the selected
-        filter.  If the filter returns ``None``, get the index from the
-        spin box and return that frame.
+        Load the dataset into memory from file if it is not currently
+        cached.  If the array is a monochrome or RGB(A) 2D image, simply
+        return it.  If the image is 4D, select the frame from the spin
+        box and return that frame.  Otherwise, if the image is a (N,H,W)
+        array, apply the selected filter.  If the filter returns
+        ``None``, get the index from the spin box and return that frame.
 
         """
         logger = logging.getLogger(__name__ +".ColorRow.get_frame")
