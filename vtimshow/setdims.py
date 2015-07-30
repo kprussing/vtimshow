@@ -20,13 +20,13 @@ class SetDims(QtGui.QDialog):
     This class provides a means to transpose the array used as an image
     once it has been loaded into memory.  The default orientation
     specified by the :class:`preferences.Preferences` can be set for the
-    most common orientation encountered; however, there is no guarantee
-    that every dataset will have that orientation.  This provides a
-    means to dynamically reshape the image.  By default, the height and
-    width are taken as the first two dimensions.  The third dimension
-    defaults to the depth.  If the given array has three or four
-    dimensions, the RGB(A) combo box is activated and all dimensions
-    that are 3 or 4 in size are added a valid options.
+    most common orientation encountered; however, we are not guaranteed
+    to get every dataset with that orientation.  This provides a means
+    to dynamically reshape the image.  By default, the height and width
+    are taken as the first two dimensions.  The third dimension defaults
+    to the depth.  If the given array has three or four dimensions, the
+    RGB(A) combo box is activated and all dimensions that are 3 or 4 in
+    size are added a valid options.
 
     """
 

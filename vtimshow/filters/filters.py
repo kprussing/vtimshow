@@ -15,7 +15,7 @@ class Filters(QtGui.QComboBox):
 
     This class iterates over all of the valid entry points provided in
     the group ``vtimshow.filters`` from ``setuptools`` and populates
-    it's combo box with the names of the entry points.  To be valid, the
+    its combo box with the names of the entry points.  To be valid, the
     object referenced by the entry point must have a ``name`` variable
     that provides a string to use in the combo box and a
     ``comupte(array)`` method that accepts a ``(N,H,W)`` array and
