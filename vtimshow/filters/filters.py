@@ -117,7 +117,7 @@ class Filters(QtGui.QComboBox):
         logger = logging.getLogger(__name__ +".Filters.apply")
         filt = self.currentText()
         try:
-            ret = self._plugins[filt].compute(array)
+            ret = self._plugins[filt](array)
         except RuntimeError as err:
             msg = "Error applying {0:s}.  Message {1!s}"
             logger.warning(msg.format(filt, err))
