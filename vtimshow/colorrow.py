@@ -15,6 +15,7 @@ from vitables.vtapp import translate as _translate
 from . import _defaults
 from .preferences import Preferences
 from .filters import Filters
+from .filters.nofilter import name as _no_filter_name
 
 class ColorRow(QtGui.QGroupBox):
     """A class to hold a row for assigning the color channels.
@@ -47,11 +48,22 @@ class ColorRow(QtGui.QGroupBox):
     """Signal that the frame changed on a row."""
 
     def __init__(self, parent, index=None, color=None):
-        """Initialize the color row group."""
+        """Initialize the color row group.
+
+        Parameters
+        ----------
+
+        parent : :class:`MultiCubeMath`
+            The window that will hold the color row.
+        index : :class:`PyQt4.QtCore.QModelIndex` or ``None``
+            The index of a data set in a revealed group.
+        color : string
+            A valid color parameter to pass to PyQtGraph.
+
+        """
         logger = logging.getLogger(__name__ +".ColorRow")
         super(ColorRow, self).__init__(parent)
 
-        #self._group = QtGui.QGroupBox(self)
         self._layout = QtGui.QGridLayout(self)
         self._layout.setMargin(0)
         self._layout.setSpacing(0)
@@ -70,9 +82,9 @@ class ColorRow(QtGui.QGroupBox):
         self._spin_box = QtGui.QSpinBox(self)
         self._layout.addWidget(self._spin_box, 0, 2, 1, 1)
 
-        self._filter = Filters(self)
-        self._filter.setEnabled(False)
-        self._layout.addWidget(self._filter, 0, 3, 1, 1)
+        self._filters = Filters(self)
+        self._filters.setEnabled(False)
+        self._layout.addWidget(self._filters, 0, 3, 1, 1)
 
         self._layout.setColumnStretch(0, 2)
         self._layout.setColumnStretch(1, 3)
@@ -82,11 +94,10 @@ class ColorRow(QtGui.QGroupBox):
         self._combo_box.currentIndexChanged.connect(self._node_changed)
         self._line.sigPositionChanged.connect(self._line_moved)
         self._spin_box.valueChanged.connect(self._spin_changed)
-        self._filter.currentIndexChanged.connect(
-            self.frame_changed.emit
-        )
+        self._filters.currentIndexChanged.connect(self._filter_changed)
 
         self._order = Preferences()
+        self.cached = False
 
         self._update_combobox()
         if index is None:
@@ -203,27 +214,50 @@ class ColorRow(QtGui.QGroupBox):
             else:
                 raise RuntimeError("This should be impossible")
 
-            self._plot.setEnabled(True)
-            self._spin_box.setEnabled(True)
-            self._plot.setXRange(0, self.data.shape[depth])
-            self._spin_box.setMaximum(self.data.shape[depth])
-            if self.node_is_2d() or self.data.ndim == 4:
-                self._filter.setEnabled(False)
+            if self.node_is_2d():
+                self._plot.setEnabled(False)
+                self._spin_box.setEnabled(False)
             else:
-                self._filter.setEnabled(True)
+                self._plot.setEnabled(True)
+                self._spin_box.setEnabled(True)
+                self._plot.setXRange(0, self.data.shape[depth])
+                self._spin_box.setMaximum(self.data.shape[depth])
+
+            if self.node_is_2d() or self.data.ndim == 4:
+                self._filters.setEnabled(False)
+            else:
+                self._filters.setEnabled(True)
         else:
             self._line.setEnabled(False)
             self._plot.setEnabled(False)
             self._spin_box.setEnabled(False)
-            self._filter.setEnabled(False)
+            self._filters.setEnabled(False)
+
+        self.cached = False
+        self.frame_changed.emit()
 
     def _line_moved(self):
         """Make the line and combo box track each other."""
         self._spin_box.setValue(int(self._line.value()))
+        self.cached = False
+        self.frame_changed.emit()
 
     def _spin_changed(self):
         """Make the line and combo box track each other."""
         self._line.setValue(self._spin_box.value())
+
+    def _filter_changed(self):
+        """"Disable the band selection if a filter is selected."""
+        self._line.setEnabled(
+            self._filters.currentText() == _no_filter_name
+        )
+        self._plot.setEnabled(
+            self._filters.currentText() == _no_filter_name
+        )
+        self._spin_box.setEnabled(
+            self._filters.currentText() == _no_filter_name
+        )
+        self.cached = False
         self.frame_changed.emit()
 
     def node_is_2d(self):
@@ -255,43 +289,57 @@ class ColorRow(QtGui.QGroupBox):
         spin box and return that frame.
 
         """
+        logger = logging.getLogger(__name__ +".ColorRow.get_frame")
         if self.data is None:
             return None
 
         idx = self._spin_box.value()
-        if self.data.ndim == 2:
-            array = self.data.transpose((
-                int(self._order["2D"]["Height"]),
-                int(self._order["2D"]["Width"])
-            ))
-            ret = array
-        elif self.data.ndim == 3:
-            if self.node_is_2d():
-                array = self.data.transpose((
+        if not self.cached:
+            logger.debug("Recomputing the array")
+            self.filtered = False
+            if self.data.ndim == 2:
+                self._array = self.data.read().transpose((
                     int(self._order["2D"]["Height"]),
-                    int(self._order["2D"]["Width"]),
-                    int(self._order["2D"]["RGB(A)"])
+                    int(self._order["2D"]["Width"])
                 ))
-                ret = array
+                logger.debug("Found 2D array!")
+            elif self.data.ndim == 3:
+                if self.node_is_2d():
+                    self._array = self.data.read().transpose((
+                        int(self._order["2D"]["Height"]),
+                        int(self._order["2D"]["Width"]),
+                        int(self._order["2D"]["RGB(A)"])
+                    ))
+                    self.filtered = True
+                    logger.debug("Found 2D array!")
+                else:
+                    self._array = self.data.read().transpose((
+                        int(self._order["3D"]["Depth"]),
+                        int(self._order["3D"]["Height"]),
+                        int(self._order["3D"]["Width"])
+                    ))
+                    ret = self._filters.apply(self._array)
+                    if ret is not None:
+                        self._array = ret
+                        self.filtered = True
+                    logger.debug("Found 3D array!")
             else:
-                array = self.data.transpose((
-                    int(self._order["3D"]["Depth"]),
-                    int(self._order["3D"]["Height"]),
-                    int(self._order["3D"]["Width"])
+                self._array = self.data.read().transpose((
+                    int(self._order["4D"]["Depth"]),
+                    int(self._order["4D"]["Height"]),
+                    int(self._order["4D"]["Width"]),
+                    int(self._order["4D"]["RGB(A)"])
                 ))
-                ret = self._filters.apply(array)
-        else:
-            array = self.data.transpose((
-                int(self._order["4D"]["Depth"]),
-                int(self._order["4D"]["Height"]),
-                int(self._order["4D"]["Width"]),
-                int(self._order["4D"]["RGB(A)"])
-            ))
-            ret = array[idx, :, :, :]
+                logger.debug("Found 4D array!")
 
-        if ret is None:
-            idx = self._spin_box.value()
-            ret = array[idx, :, :]
+            self.cached = True
+
+        if self.data.ndim == 4:
+            ret = self._array[idx,:,:,:]
+        elif self.data.ndim == 3 and not self.filtered:
+            ret = self._array[idx,:,:]
+        else:
+            ret = self._array
 
         return ret
 
