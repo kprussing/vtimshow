@@ -20,17 +20,17 @@ class ImageWindow(QtGui.QMdiSubWindow):
     """The window to hold the image in the workspace of ViTables
 
     This class defines the widget to live within the ViTables workspace
-    and instantiates a :class:`pyqtgraph.ImageView` to display the data
-    set.  The data set is loaded from the underlying file in the order
-    specified by :class:`preferences.Preferences`.  This also adds a
-    menu item to launch a :class:`setdims.SetDims` window to reshape the
-    array if the underlying order of the data set is not what is
+    and instantiates a :class:`pyqtgraph.ImageView` to display the
+    dataset.  The dataset is loaded from the underlying file in the
+    order specified by :class:`preferences.Preferences`.  This also adds
+    a menu item to launch a :class:`setdims.SetDims` window to reshape
+    the array if the underlying order of the dataset is not what is
     specified in the preferences.
 
     """
 
     def __init__(self, leaf, parent):
-        """Load the data set and display it as an image.
+        """Load the dataset and display it as an image.
 
         Parameters
         ----------

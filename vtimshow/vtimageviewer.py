@@ -17,7 +17,7 @@ class VtImageViewer:
 
     This is the high level class needed to plug into ViTables.  It
     adds the necessary menu options to the appropriate menu(s) and
-    defines the methods to launch any desired actions.
+    defines the methods to launch the desired actions.
 
     """
     UID = _defaults["UID"]
@@ -26,21 +26,38 @@ class VtImageViewer:
 
     def __init__(self, parent=None):
         """Add the menu items and connect the actions."""
-        #super(VtImageViewer, self).__init__(parent)
         logger = logging.getLogger(__name__ +".VtImageViewer")
         logger.debug("Constructor called")
 
         gui = vitables.utils.getGui()
         actions = []
 
-        actions.append(QtGui.QAction("Image View", gui))
-        actions[-1].setStatusTip("View as image")
+        action = QtGui.QAction(
+            _translate(
+                _defaults["PLUGIN_CLASS"],
+                "Image View",
+                "Plugin action"
+            ),
+            gui
+        )
+        actions.append(action)
+        actions[-1].setStatusTip(_translate(
+            _defaults["PLUGIN_CLASS"], "View as image", "Plugin action"
+        ))
         actions[-1].triggered.connect(self.imshow)
 
-        actions.append(QtGui.QAction("Compare Datasets", gui))
+        action = QtGui.QAction(
+            _translate(
+                _defaults["PLUGIN_CLASS"],
+                "Compare Datasets",
+                "Plugin action"
+            ),
+            gui
+        )
+        actions.append(action)
         actions[-1].setStatusTip(_translate(
             _defaults["PLUGIN_CLASS"],
-            "Begin comparing data sets",
+            "Begin comparing datasets",
             "Plugin tool tip"
         ))
         actions[-1].triggered.connect(self.launch_compare)
@@ -48,7 +65,7 @@ class VtImageViewer:
         vitables.utils.addToLeafContextMenu(actions)
 
     def imshow(self):
-        """Generate an image from a data set in the workspace."""
+        """Generate an image from a dataset in the workspace."""
         logger = logging.getLogger(__name__ +".VtImageViewer.imshow")
         indexes = vitables.utils.getSelectedIndexes()
         if len(indexes) != 1:
@@ -87,14 +104,14 @@ class VtImageViewer:
         window = ImageWindow(leaf, parent=workspace)
 
     def launch_compare(self):
-        """Launch the multiple data set comparison."""
+        """Launch the multiple dataset comparison."""
         workspace = vitables.utils.getGui().workspace
         window = MultiCubeMath(parent=workspace)
 
     def helpAbout(self, parent):
         """Full description of the plugin.
 
-        The help about page needed by ViTables to recognize a plug-in.
+        The help/about page needed by ViTables to recognize a plugin.
         This has been adapted from the code used in :class:`ImportCSV`
         distributed with ViTables.
 
@@ -117,9 +134,9 @@ class VtImageViewer:
                 _defaults["PLUGIN_CLASS"],
                 """
                 <qt>
-                <p>View 2D data set as an image.</p>
+                <p>View datasets as images.</p>
                 <p>
-                If the data set is simply 2D, view it as an image.  If
+                If the dataset is simply 2D, view it as an image.  If
                 the dataset is 3D of dimension (N,M,K), view each (N,M)
                 slice [0,K) as an image with a slider.
                 </p>

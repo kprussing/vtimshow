@@ -19,20 +19,18 @@ class FrameMath:
 
     This class takes a reference to the parent :class:`ImageWindow`.  It
     then adds a frame to the bottom of the :class:`pyqtgraph.ImageView`
-    embedded in the parent.  By default, this frame is hidden and a menu
-    option option to toggle visibility is added to the menu button in
-    the window.  When the frame is toggled on, the default frame
-    selector is toggled off.  Instead, color coded selector for R, G,
-    and B frames are added to the time series plot.  These may be
-    dragged along the axis or set with the connected spin boxes.  The
-    bottom of the frame ha radio buttons that will perform simple
-    arithmetic on the frames and display the monochrome results, or it
-    will display the RGB combination of the bands.
+    embedded in the parent.  This frame is hidden by default, and an
+    option is added to the menu button in the main window to toggle the
+    visibility.  When the frame is toggled on, the default frame
+    selector in the :class:`pyqtgraph.ImageView` is toggled off and
+    color coded selectors for the red, green, and blue frames are added
+    to the time series plot.  These may be dragged along the axis or set
+    with the connected spin boxes.  The bottom of the frame has radio
+    buttons that will perform simple arithmetic on the frames and
+    display the monochrome results, or it will display the RGB
+    combination of the bands.
 
     """
-    R = None
-    G = None
-    B = None
 
     def __init__(self, parent):
         """Initialize the math frame.
@@ -204,7 +202,7 @@ class FrameMath:
         """Toggle the frame on and off.
 
         Toggle the R, G, and B selectors to be visible when the frame is
-        and the default frame selector to be the opposite.
+        visible and the default frame selector to be the opposite.
 
         Parameters
         ----------

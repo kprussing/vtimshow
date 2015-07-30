@@ -15,9 +15,9 @@ class AboutPage(QtGui.QWidget):
     window.  It follows the format used by the CSV tools distributed
     with ViTables and includes the module version, name, folder, author,
     and comment.  It adds combo boxes to allow the user to define the
-    preferred orientation of the data sets in the files.  By default,
-    the arrays are assumed to be row-major order.  This places the index
-    of the time series as the first index of a 3D or 4D array.
+    preferred orientation of the datasets in the files.  By default, the
+    arrays are assumed to be row-major order.  This places the index of
+    the time series as the first index of a 3D or 4D array.
 
     """
 
@@ -33,7 +33,7 @@ class AboutPage(QtGui.QWidget):
 
         desc : dict
             The description dictionary.
-        parent : QWidget, optional
+        parent : :class:`PyQt4.QtGui.QWidget`, optional
             The parent widget.
 
         """

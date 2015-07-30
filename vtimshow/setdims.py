@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-__doc__="""A module to define a dialog to reshape the image."""
+__doc__="""The module defining a dialog to reshape the image."""
 
 import collections
 import logging
@@ -21,7 +21,7 @@ class SetDims(QtGui.QDialog):
     once it has been loaded into memory.  The default orientation
     specified by the :class:`preferences.Preferences` can be set for the
     most common orientation encountered; however, there is no guarantee
-    that every data set will have that orientation.  This provides a
+    that every dataset will have that orientation.  This provides a
     means to dynamically reshape the image.  By default, the height and
     width are taken as the first two dimensions.  The third dimension
     defaults to the depth.  If the given array has three or four
@@ -35,9 +35,9 @@ class SetDims(QtGui.QDialog):
         Get the dimension assignments from the user.
 
         Given a :class:`numpy.ndarray` compatible array, let the user
-        decide which dimensions are the width, height, and depth.  The
-        given array must have a ``shape`` attribute analogous to the
-        :class:`numpy.ndarray` attribute.
+        decide which dimensions are the width, height, depth, and
+        possibly RGB(A).  The given array must have a ``shape``
+        attribute analogous to the :class:`numpy.ndarray` attribute.
 
         Parameters
         ----------
@@ -45,7 +45,7 @@ class SetDims(QtGui.QDialog):
         array : array_like
             :class:`numpy.ndarray` compatible objects with a ``shape``
             attribute.
-        parent : QWidget, optional
+        parent : :class:`PyQt4.QtGui.QWidget`, optional
             The parent widget.
 
         """
@@ -220,7 +220,6 @@ class SetDims(QtGui.QDialog):
         if idx is None:
             return None
 
-
         return Dimension(
             dim=idx,
             start=self.heightSpinBoxStart.value(),
@@ -235,7 +234,6 @@ class SetDims(QtGui.QDialog):
         idx = self._combobox_text_to_index(self.widthComboBox)
         if idx is None:
             return None
-
 
         return Dimension(
             dim=idx,
