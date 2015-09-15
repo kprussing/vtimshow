@@ -8,7 +8,7 @@ from PyQt4 import QtGui
 import vitables
 from vitables.vtapp import translate as _translate
 
-from . import _defaults
+from . import comment, dist, meta, plugin_class, plugin_name
 from .imagewindow import ImageWindow
 from .multicubemath import MultiCubeMath
 
@@ -20,9 +20,9 @@ class VtImageViewer:
     defines the methods to launch the desired actions.
 
     """
-    UID = _defaults["UID"]
-    NAME = _defaults["PLUGIN_NAME"]
-    COMMENT = _defaults["COMMENT"]
+    UID = meta.split("Name:")[1].split("\n")[0].strip()
+    NAME = plugin_name
+    COMMENT = comment
 
     def __init__(self, parent=None):
         """Add the menu items and connect the actions."""
@@ -34,31 +34,25 @@ class VtImageViewer:
 
         action = QtGui.QAction(
             _translate(
-                _defaults["PLUGIN_CLASS"],
-                "Image View",
-                "Plugin action"
+                plugin_class, "Image View", "Plugin action"
             ),
             gui
         )
         actions.append(action)
         actions[-1].setStatusTip(_translate(
-            _defaults["PLUGIN_CLASS"], "View as image", "Plugin action"
+            plugin_class, "View as image", "Plugin action"
         ))
         actions[-1].triggered.connect(self.imshow)
 
         action = QtGui.QAction(
             _translate(
-                _defaults["PLUGIN_CLASS"],
-                "Compare Datasets",
-                "Plugin action"
+                plugin_class, "Compare Datasets", "Plugin action"
             ),
             gui
         )
         actions.append(action)
         actions[-1].setStatusTip(_translate(
-            _defaults["PLUGIN_CLASS"],
-            "Begin comparing datasets",
-            "Plugin tool tip"
+            plugin_class, "Begin comparing datasets", "Plugin tool tip"
         ))
         actions[-1].triggered.connect(self.launch_compare)
 
@@ -70,7 +64,7 @@ class VtImageViewer:
         indexes = vitables.utils.getSelectedIndexes()
         if len(indexes) != 1:
             msg = _translate(
-                _defaults["PLUGIN_CLASS"],
+                plugin_class,
                 "Only one node can be viewed as an image at a time!",
                 "Plugin error message"
             )
@@ -82,7 +76,7 @@ class VtImageViewer:
         node = leaf.node
         if node.dtype.kind not in "iuf":
             msg = _translate(
-                _defaults["PLUGIN_CLASS"],
+                plugin_class,
                 "Node must be a numeric type array!",
                 "Plugin error message"
             )
@@ -92,7 +86,7 @@ class VtImageViewer:
         if not (node.ndim == 2 and 1 not in node.shape) \
                 and node.ndim not in (3,4):
             msg = _translate(
-                _defaults["PLUGIN_CLASS"],
+                plugin_class,
                 "Node must be 2D, 3D or 4D.",
                 "Plugin error message"
             )
@@ -123,15 +117,17 @@ class VtImageViewer:
 
         """
         from .aboutpage import AboutPage
+        author = "{0:s} <{1:s}>".format(
+            meta.split("Author:")[1].split("\n")[0].strip(),
+            meta.split("Author-email:")[1].split("\n")[0].strip(),
+        )
         desc = {
-            "version" : _defaults["VERSION"],
-            "module_name" : _defaults["MODULE_NAME"],
-            "folder" : _defaults["FOLDER"],
-            "author" : "{0:s} <{1:s}>".format(
-                _defaults["AUTHOR"], _defaults["AUTHOR_EMAIL"]
-            ),
+            "version" : dist.version,
+            "module_name" : dist.project_name,
+            "folder" : dist.location,
+            "author" : author,
             "comment" : _translate(
-                _defaults["PLUGIN_CLASS"],
+                plugin_class,
                 """
                 <qt>
                 <p>View datasets as images.</p>

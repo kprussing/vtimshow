@@ -12,7 +12,7 @@ import tables
 import vitables
 from vitables.vtapp import translate as _translate
 
-from . import _defaults
+from . import plugin_class
 from .colorrow import ColorRow
 from .utils import divide
 
@@ -50,7 +50,7 @@ class MultiCubeMath(QtGui.QMdiSubWindow):
         if len(indexes) > 3:
             msg = "A maximum of 3 leafs may be selected.  Ignoring {:d}"
             logger.warn(_translate(
-                _defaults["PLUGIN_CLASS"],
+                plugin_class,
                 msg.format(len(indexes) -3),
                 "Pluggin warning message"
             ))
@@ -73,7 +73,7 @@ class MultiCubeMath(QtGui.QMdiSubWindow):
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.setWindowTitle(_translate(
-            _defaults["PLUGIN_CLASS"], "Compare Datasets", "Title"
+            plugin_class, "Compare Datasets", "Title"
         ))
         self.setVisible(True)
 

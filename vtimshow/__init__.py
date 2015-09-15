@@ -14,40 +14,21 @@ import logging
 import os
 import pkg_resources
 
-_dist = pkg_resources.get_distribution(__name__)
+dist = pkg_resources.get_distribution(__name__)
+meta = dist.get_metadata(dist.PKG_INFO)
 
-_defaults = dict(
-    PLUGIN_CLASS = "VtImageViewer",
-    PLUGIN_NAME = "Image Viewer",
-)
+plugin_class = "VtImageViewer"
+plugin_name = "Image Viewer"
+comment = meta.split("Summary:")[1].split("\n")[0].strip()
+module_name = __name__
 
-_defaults["FOLDER"] = _dist.location
-_defaults["MODULE_NAME"] = _dist.project_name
-_defaults["VERSION"] = _dist.version
-
-_defaults["LOGGER"] = logging.getLogger(_defaults["MODULE_NAME"])
-_defaults["LOGGER"].addHandler(logging.NullHandler())
-
-pairs = (
-    ("AUTHOR", "Author:"),
-    ("AUTHOR_EMAIL", "Author-email:"),
-    ("LICENSE", "License:"),
-    ("COMMENT", "Summary:"),
-    ("UID", "Name:")
-)
-_metadata = _dist.get_metadata("PKG-INFO")
-for k1, k2 in pairs:
-    _defaults[k1] = _metadata.split(k2)[1].split("\n")[0].strip()
+logger = logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 __docformat__ = "restructuredtext"
-__version__ = _defaults["VERSION"]
-
-plugin_class = _defaults["PLUGIN_CLASS"]
-plugin_name = _defaults["PLUGIN_NAME"]
-comment = _defaults["COMMENT"]
+__version__ = dist.version
 
 from vtimshow.vtimageviewer import VtImageViewer
 
 from .utils import setup_logger as _setup_logger
-_setup_logger(_defaults["MODULE_NAME"])
+_setup_logger(__name__)
 

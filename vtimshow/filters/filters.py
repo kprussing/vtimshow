@@ -7,7 +7,7 @@ from PyQt4 import QtGui
 
 from .nofilter import name as _no_filter_name
 
-from .. import _defaults
+from .. import plugin_class
 from vitables.vtapp import translate as _translate
 
 class Filters(QtGui.QComboBox):
@@ -75,7 +75,7 @@ class Filters(QtGui.QComboBox):
                         +"author(s) of the plugins to establish a " \
                         +"unique name for each."
                     raise RuntimeError(_translate(
-                        _defaults["PLUGIN_CLASS"],
+                        plugin_class,
                         msg.format(loaded.name),
                         "Plugin error message"
                     ))
@@ -91,7 +91,7 @@ class Filters(QtGui.QComboBox):
                     msg = "Skipping poorly formed filter {0!s}!  " \
                         "{2:s} is missing"
                     logger.warn(_translate(
-                        _defaults["PLUGIN_CLASS"],
+                        plugin_class,
                         msg.format(entry, miss),
                         "Plugin error message"
                     ))
@@ -100,7 +100,7 @@ class Filters(QtGui.QComboBox):
 
         if self.count() == 0:
             raise RuntimeError(_translate(
-                _defaults["PLUGIN_CLASS"],
+                plugin_class,
                 "Required no filter plugin missing!",
                 "Plugin error message"
             ))
@@ -136,7 +136,7 @@ class Filters(QtGui.QComboBox):
         except RuntimeError as err:
             msg = "Error applying {0:s}.  Message {1!s}"
             logger.warning(_translate(
-                _defaults["PLUGIN_CLASS"],
+                plugin_class,
                 msg.format(filt, err),
                 "Plugin error message"
             ))

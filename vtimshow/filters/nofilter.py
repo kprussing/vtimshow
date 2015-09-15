@@ -8,6 +8,8 @@ selection.
 """
 from vitables.vtapp import translate as _translate
 
+from .. import plugin_class
+
 name = "No filter"
 """The filter name."""
 
@@ -38,7 +40,7 @@ def compute(array):
     """
     if array.ndim != 3:
         raise RuntimeError(_translate(
-            _defaults["PLUGIN_CLASS"],
+            plugin_class,
             "Invalid array with dimension {0:d}".format(array.ndim),
             "Plugin error message"
         ))

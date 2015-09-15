@@ -12,7 +12,6 @@ import tables
 import vitables
 from vitables.vtapp import translate as _translate
 
-from . import _defaults
 from .preferences import Preferences
 from .filters import Filters
 from .filters.nofilter import name as _no_filter_name

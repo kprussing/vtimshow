@@ -23,7 +23,7 @@ import pkg_resources
 import numpy
 import scipy.interpolate
 
-from .. import _defaults
+from .. import plugin_class
 from vitables.vtapp import translate as _translate
 
 def apply_spectrum(array, color):
@@ -60,7 +60,7 @@ def apply_spectrum(array, color):
     """
     if array.ndim != 3:
         raise RuntimeError(_translate(
-            _defaults["PLUGIN_CLASS"],
+            plugin_class,
             "Invalid array with dimension {0:d}".format(array.ndim),
             "Plugin error message"
         ))
@@ -68,7 +68,7 @@ def apply_spectrum(array, color):
     if color not in _spectrum:
         msg = "Unknown response {0!s}!  Should be in {1!s}"
         raise RumtimeError(_translate(
-            _defaults["PLUGIN_CLASS"],
+            plugin_class,
             msg.format(color, list(_spectrum.keys())),
             "Plugin error message"
         ))
@@ -117,7 +117,7 @@ def load_spline_data(csvfile="stockman_spectral_2000-table-3.csv"):
     )
     if data.shape[1] != 4:
         raise RuntimeError(_translate(
-            _defaults["PLUGIN_CLASS"],
+            plugin_class,
             "{0:s} does not have four columns!".format(csvfile),
             "Plungin error message"
         ))

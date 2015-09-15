@@ -11,7 +11,7 @@ from PyQt4 import QtGui
 import vitables
 from vitables.vtapp import translate as _translate
 
-from . import _defaults
+from . import plugin_class
 from .utils import divide as _divide
 
 class FrameMath:
@@ -58,7 +58,7 @@ class FrameMath:
         label_1 = QtGui.QLabel(self.group)
         label_1.setText(
             _translate(
-                _defaults["PLUGIN_CLASS"], "Select Frames:", "Label"
+                plugin_class, "Select Frames:", "Label"
             )
         )
 
@@ -158,7 +158,7 @@ class FrameMath:
 
         self.group.setTitle(
             _translate(
-                _defaults["PLUGIN_CLASS"], "Frame math", "Layout"
+                plugin_class, "Frame math", "Layout"
             )
         )
         self.group.hide()

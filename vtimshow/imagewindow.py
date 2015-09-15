@@ -11,7 +11,7 @@ import pyqtgraph
 import vitables
 from vitables.vtapp import translate as _translate
 
-from . import _defaults
+from . import plugin_class
 from .setdims import SetDims
 from .framemath import FrameMath
 from .preferences import Preferences
@@ -46,7 +46,7 @@ class ImageWindow(QtGui.QMdiSubWindow):
             data = leaf.node.read()
         else:
             msg = _translate(
-                    _defaults["PLUGIN_CLASS"],
+                    plugin_class,
                     "Array must be 2D, 3D, or 4D",
                     "Plugin error message"
                 )
@@ -126,7 +126,7 @@ class ImageWindow(QtGui.QMdiSubWindow):
         elif D is not None and R is None:
             if len(self.data.shape) != 3:
                 msg = _translate(
-                    _defaults["PLUGIN_CLASS"],
+                    plugin_class,
                     "Either Depth or RGBA can be set!  Not both.",
                     "Plugin error message"
                 )
@@ -141,7 +141,7 @@ class ImageWindow(QtGui.QMdiSubWindow):
         elif D is None and R is not None:
             if len(self.data.shape) != 3:
                 msg = _translate(
-                    _defaults["PLUGIN_CLASS"],
+                    plugin_class,
                     "Either Depth or RGBA can be set!  Not both.",
                     "Plugin error message"
                 )
