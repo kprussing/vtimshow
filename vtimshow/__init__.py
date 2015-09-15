@@ -14,17 +14,20 @@ import logging
 import os
 import pkg_resources
 
+_dist = pkg_resources.get_distribution(__name__)
+
 _defaults = dict(
     PLUGIN_CLASS = "VtImageViewer",
     PLUGIN_NAME = "Image Viewer",
 )
-_defaults["FOLDER"], _defaults["MODULE_NAME"] = os.path.split(
-    os.path.dirname(__file__)
-)
+
+_defaults["FOLDER"] = _dist.location
+_defaults["MODULE_NAME"] = _dist.project_name
+_defaults["VERSION"] = _dist.version
+
 _defaults["LOGGER"] = logging.getLogger(_defaults["MODULE_NAME"])
 _defaults["LOGGER"].addHandler(logging.NullHandler())
-_dist = pkg_resources.get_distribution(_defaults["MODULE_NAME"])
-_defaults["VERSION"] = _dist.version
+
 pairs = (
     ("AUTHOR", "Author:"),
     ("AUTHOR_EMAIL", "Author-email:"),

@@ -2,6 +2,7 @@
 __doc__="""The module defining the about page."""
 import logging
 import os
+import pkg_resources
 
 from PyQt4 import QtGui
 from PyQt4 import uic
@@ -39,11 +40,9 @@ class AboutPage(QtGui.QWidget):
         """
         logger = logging.getLogger(__name__ +".AboutPage")
         super(AboutPage, self).__init__(parent)
-        logger.debug("Load the UI")
-        uic.loadUi(
-            os.path.join(os.path.dirname(__file__), "aboutpage.ui"),
-            self
-        )
+        path = pkg_resources.resource_filename(__name__, "aboutpage.ui")
+        logger.debug("Load the UI from {0:s}".format(path))
+        uic.loadUi(path, self)
 
         # Set the default information.
         self.version_le.setText(desc['version'])

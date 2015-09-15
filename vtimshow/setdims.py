@@ -4,6 +4,7 @@ __doc__="""The module defining a dialog to reshape the image."""
 import collections
 import logging
 import os
+import pkg_resources
 import numpy
 
 from PyQt4 import QtGui
@@ -51,7 +52,7 @@ class SetDims(QtGui.QDialog):
         """
         super(SetDims, self).__init__(parent)
         uic.loadUi(
-            os.path.join(os.path.dirname(__file__), "setdims.ui"),
+            pkg_resources.resource_filename(__name__, "setdims.ui"),
             self
         )
         self.dims = array.shape

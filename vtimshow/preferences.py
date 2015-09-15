@@ -3,6 +3,7 @@ __doc__="""The module defining an order preferences class."""
 
 import configparser
 import os
+import pkg_resources
 
 class Preferences(configparser.ConfigParser):
     """A class to handle the order preferences.
@@ -35,7 +36,9 @@ class Preferences(configparser.ConfigParser):
     RGB(A) 3
 
     """
-    _inifile = os.path.join(os.path.dirname(__file__),"preferences.ini")
+    _inifile = pkg_resources.resource_filename(
+            __name__, "preferences.ini"
+        )
 
     def __init__(self, inifile=None):
         """Initialize to the given file or use the defaults.
