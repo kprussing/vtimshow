@@ -114,6 +114,9 @@ requires `setuptools-git` to work.  If you need to install ViTables from
 an archived download, please refer to `this patch`_ to aid in
 installation.
 
+The branching scheme is that master is the development branch and stable
+is only for bug fixes and tagging releases.
+
 .. _ViTables: http://vitables.org
 .. _PyQtGraph: http://www.pyqtgraph.org
 .. _Sphinx: http://sphinx-doc.org/index.html
